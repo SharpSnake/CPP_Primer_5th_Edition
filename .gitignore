@@ -1,2 +1,13 @@
 
 CppPrimer5th/fcout.txt
+CppPrimer5th.VC.db
+CppPrimer5th.VC.VC.opendb
+*.ipch
+*.tlog
+*.pdb
+*.idb
+*.ilk
+*.pch
+Debug/CppPrimer5th.exe
+*.obj
+*.log
