@@ -31,8 +31,7 @@ void Chapter02::Run()
 
 	unsigned u1 = 10, u2 = 40;
 	int i = -42;
-	cout << u1 + i << endl;   // i会转为无符号再计算
-	cout << u1 * i << endl;   // 同上
+	cout << u1 + i << endl << u1 * i << endl;   // i会转为无符号再计算
 	
 	// 如果两个无符号计算产生负值，结果会按溢出处理
 	// unsigned maximum = 4294967295, u1 - u2 = -30, 
@@ -73,11 +72,11 @@ void Chapter02::Run()
 	map< string, TSPoint > map1 = { { "point1", { 1.1, 2.2 } }, 
 									{ "point2", { 2.2, 3.3 } } };
 	cout << i5 << endl;
-	for( auto i = map1.begin(); i != map1.end(); ++i ) MCPP11
-		cout << i->first << ": " << i->second << endl;
+	for( auto &i : map1 ) MCPP11
+		cout << i.first << ": " << i.second << endl;
 	FinishOneTest( "C++11列表初始化" );
 
-	int vInFunction = 7;
+	int vInFunction;
 	// 这里若尝试使用vInFunction则编译失败，函数内变量不会默认初始化
 	cout << _VOutOfFunction << endl;
 	FinishOneTest( "函数体内外变量默认初始化" );
@@ -86,4 +85,11 @@ void Chapter02::Run()
 	int VChapter02extern = 5;   // 局部会覆盖全局，想用全局的话需要用::显式访问
 	cout << VChapter02extern << " " << ::VChapter02extern << endl;
 	FinishOneTest( "全局变量声明和定义分离" );
+
+
+	// 假设有两个重载函数：void foo( int i );	void foo( char *p );
+	// 引入 nullptr 的目的是避免二义性，过去的NULL和0等价，
+	// 调用foo( NULL )时就会引起混淆，现在调用foo( nullptr )将明确地调用第二个重载
+	FinishOneTest( nullptr );MCPP11
+	
 }

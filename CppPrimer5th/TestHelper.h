@@ -7,6 +7,8 @@
 #include <iostream>
 #include <string>
 
+// 头文件中最好不要用using声明，当此头文件被包含到其他cpp时，
+// 可能会引发意想不到的名字冲突，所以最好由cpp自己决定使用哪些using声明
 using namespace std;
 
 // 测试用结构体：二维点
