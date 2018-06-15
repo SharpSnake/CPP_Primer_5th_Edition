@@ -2,11 +2,14 @@
 //
 
 #include "stdafx.h"
+#include "TestHelper.h"
 #include "Chapter01.h"
 #include "Chapter02.h"
 
 int main()
 {
+	ConsoleTextColorReseter::Init();
+
 	TestBase *test = new Chapter02();
 	test->Run();
 	delete test;

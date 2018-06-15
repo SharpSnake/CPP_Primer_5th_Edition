@@ -33,6 +33,9 @@
     <ClInclude Include="Chapter02.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ConsoleTextColorReseter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -45,6 +48,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Chapter02.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleTextColorReseter.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,11 +12,11 @@ void Chapter02::Run()
 {
 	// char有三个相关的类型，其中char并不能保证是有符号的，
 	// 所以使用中如果确定需要使用有（无）符号，最好标明
+	StartOneTest( "char的三个相关的类型" );
 	char c1 = 127;
 	signed char c2 = 127;
 	unsigned char c3 = 255;
 	cout << ( int )c1 << " " << ( int )c2 << " " << ( int )c3 << endl;
-	FinishOneTest( "char的三个相关的类型" );
 
 
 	// long和int一般情况下表现是相同的，
@@ -24,11 +24,12 @@ void Chapter02::Run()
 
 	// 书上说给一个有符号类型赋超出范围的数，会导致未定义或崩溃
 	// 但实际运行中是按溢出处理的
+	StartOneTest( "有符号char溢出测试" );
 	signed char c4 = 257;
 	cout << ( int )c4 << endl;
-	FinishOneTest( "有符号char溢出测试" );
 
 
+	StartOneTest( "有、无符号类型共同参与计算" );
 	unsigned u1 = 10, u2 = 40;
 	int i = -42;
 	cout << u1 + i << endl << u1 * i << endl;   // i会转为无符号再计算
@@ -37,17 +38,17 @@ void Chapter02::Run()
 	// unsigned maximum = 4294967295, u1 - u2 = -30, 
 	// window will prints: 4294967295 - 29
 	cout << u1 - u2 << "( 4294967295 - 29 = " << 4294967295 - 29 << " )" << endl;
-	FinishOneTest( "有、无符号类型共同参与计算" );
 
 
+	StartOneTest( "十进制、八进制、十六进制常数表示" );
 	int i2 = 20, i3 = 024, i4 = 0x14;
 	cout << i2 << " " << i3 << " " << i4 << endl;
-	FinishOneTest( "十进制、八进制、十六进制常数表示" );
-
+	
+	StartOneTest( "特殊字符需要用转义序列表示" );
 	cout << '\\' << '\t' << '\'' << '\"' << endl;
-	FinishOneTest( "特殊字符需要用转义序列表示" );
+	
 
-
+	StartOneTest( "内置类型字面值的前后缀声明" );
 	// 内置类型字面值的前后缀声明
 	const char *cs1 = u8"utf8字符串";   // u8编码占字节数比默认要多
 	const wchar_t *wcs1 = L"宽字符串";
@@ -65,31 +66,73 @@ void Chapter02::Run()
 	streamsize dft_precision = cout.precision( 15 );
 	cout <<  f1 << "\t" << d1 << endl;
 	cout.precision( dft_precision );
-	FinishOneTest( "内置类型字面值的前后缀声明" );
+	
 
-
+	StartOneTest( "C++11列表初始化" );
 	int i5{ 567 }; MCPP11   // C++11列表初始化更严格，类型必须匹配，这里不能是小数
 	map< string, TSPoint > map1 = { { "point1", { 1.1, 2.2 } }, 
 									{ "point2", { 2.2, 3.3 } } };
 	cout << i5 << endl;
 	for( auto &i : map1 ) MCPP11
 		cout << i.first << ": " << i.second << endl;
-	FinishOneTest( "C++11列表初始化" );
+	
 
+	StartOneTest( "各种情况的默认初始化" );
 	int vInFunction;
 	// 这里若尝试使用vInFunction则编译失败，函数内变量不会默认初始化
 	cout << _VOutOfFunction << endl;
-	FinishOneTest( "函数体内外变量默认初始化" );
 
+	// 类或结构体的成员变量不会默认初始化，默认都是不可预知的值，
+	TSPoint sp1;		// 除非在构造函数中指定初始值（或者用列表初始化哪怕是空的{}，
+	TCPoint cp1;		// 成员变量也会进行默认初始化，当然仅针对聚合类）来初始化对象。
+	QuadraticPoly qp1, qp2{};
+	cout << sp1 << endl << cp1 << endl << qp1 << endl << qp2 << endl;
+	
 
+	StartOneTest( "全局变量声明和定义分离" );
 	int VChapter02extern = 5;   // 局部会覆盖全局，想用全局的话需要用::显式访问
 	cout << VChapter02extern << " " << ::VChapter02extern << endl;
-	FinishOneTest( "全局变量声明和定义分离" );
-
+	
 
 	// 假设有两个重载函数：void foo( int i );	void foo( char *p );
 	// 引入 nullptr 的目的是避免二义性，过去的NULL和0等价，
 	// 调用foo( NULL )时就会引起混淆，现在调用foo( nullptr )将明确地调用第二个重载
-	FinishOneTest( nullptr );MCPP11
+	StartOneTest( nullptr );MCPP11
+
+
+	StartOneTest( "复合类型" );
+	// 复合类型声明的组成 = basetype + 声明符；
+	// 声明符 = 类型修饰符（*、&等） + 变量名
+	// 类型的解读口诀：从右向左；
+	//
+	// r6的解读：最右离变量名最近的是'&'，说明r6根本上是一个引用，再往左是'*'，
+	// 说明r6是一个指针对象的引用，再往左是基础类型int，说明r6是一个整型指针对象的引用；
+	// r6永远是p6的引用，但可以通过r6间接地修改p6实际指向的数字；
+	int i6 = 50, i7 = 100, *p6 = &i6, *&r6 = p6;
+	*p6 += 5;
+	cout << "p6开始指向i6，通过解引用修改i6的值：" << i6 << endl;
 	
+	r6 = &i7;
+	cout << "通过指针的引用，间接修改了p6的指向，现在p6指向的整数值是：" << *p6 << endl;
+
+
+	StartOneTest( "const的几个细节" );
+	// 不同于常规引用，const引用可以绑定不匹配类型的变量(r7)、表达式(r8)、字面值(r9)；
+	// 原理：编译器构造了一个不可见的临时（变）量，const引用其实绑定的是这个临时量；
+	double d2 = 3.14;
+	int i8= 10;
+	const int &r7 = d2,		/* int tmp_d2 = ( int )d2; */
+		&r8 = ( d2 + i8 ),	/* int tmp_exp = ( int )( d2 + i8 ); */
+		&r9 = 5.5;			/* int tmp_num = ( int )5.5; */
+	cout << r7 << " " << r8 << " " << r9 << endl;
+
+	const int *p7 = &i8;	// 指向常量的指针：不能修改被指向对象的值，无论这个对象是否是const；
+	int *const p9 = &i8;	// 常量指针：本指针永远指向某一个对象，不能变更；
+
+	p7 = &i7;		// correct：p7重新指向了i7
+	// &p7 = 12;	// error
+
+	*p9 += 5;		// correct：p9的指向不能变，但它指向的数字可以改动，于是i8的值加了5
+	// p9 = &i7;	// error
+	cout << *p7 << " " << i8 << endl;
 }

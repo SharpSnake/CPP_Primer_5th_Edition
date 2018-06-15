@@ -7,9 +7,13 @@
 #include <iostream>
 #include <string>
 
+#include "ConsoleTextColorReseter.h"
+
+
 // 头文件中最好不要用using声明，当此头文件被包含到其他cpp时，
 // 可能会引发意想不到的名字冲突，所以最好由cpp自己决定使用哪些using声明
 using namespace std;
+
 
 // 测试用结构体：二维点
 struct TSPoint
@@ -25,6 +29,40 @@ struct TSPoint
 		// return endl( ostm << "x：" << obj.x << "， y：" << obj.y );
 	}
 };
+
+// 测试用类：二维点
+class TCPoint
+{
+public:
+	double x;
+	double y;
+
+	friend ostream & operator <<( ostream &ostm, const TCPoint &obj )
+	{
+		return ostm << "x：" << obj.x << "， y：" << obj.y;
+	}
+};
+
+// 测试用类：二次多项式ax^2 + bx + c
+class QuadraticPoly
+{
+public:
+	double m_Coef[ 3 ];
+
+public:
+	// 求二次多项式的值
+	double Polyval( const double &x ) const
+	{
+		return m_Coef[ 0 ] * x * x + m_Coef[ 1 ] * x + m_Coef[ 2 ];
+	}
+
+	friend ostream & operator <<( ostream &ostm, const QuadraticPoly &obj )
+	{
+		return ostm << obj.m_Coef[ 0 ] << " * x^2 + " << obj.m_Coef[ 1 ] 
+			<< " * x + " << obj.m_Coef[ 2 ];
+	}
+};
+
 
 // 测试用类：人
 class TCPerson
@@ -51,13 +89,17 @@ public:
 };
 
 
-inline void FinishOneTest( const char *msg = nullptr MCPP11 )
+inline void StartOneTest( const char *msg = nullptr MCPP11 )
 {
+	CONSOLE_COLOR_AUTO_RESET;
+
+	SetConsoleTextColor( 12 );
+	cout << endl << "*********************************"
+		"*********************************" << endl;
+
+	SetConsoleTextColor( 10 );
 	if ( msg )
 		cout << msg << endl;
-	cout << "*********************************"
-		"*********************************" << endl << endl;
 }
-
 
 #endif // !TESTHELPER_H
