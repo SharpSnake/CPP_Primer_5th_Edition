@@ -148,7 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Chapter01.h" />
     <ClInclude Include="Chapter02.h" />
-    <ClInclude Include="ConsoleTextColorReseter.h" />
+    <ClInclude Include="ConsoleUtility.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestBase.h" />
     <ClInclude Include="TestHelper.h" />
@@ -156,7 +156,7 @@
   <ItemGroup>
     <ClCompile Include="Chapter01.cpp" />
     <ClCompile Include="Chapter02.cpp" />
-    <ClCompile Include="ConsoleTextColorReseter.cpp" />
+    <ClCompile Include="ConsoleUtility.cpp" />
     <ClCompile Include="CppPrimer5th.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -164,6 +164,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TestBase.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

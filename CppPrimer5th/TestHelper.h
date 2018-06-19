@@ -1,13 +1,15 @@
+// =============================================================================
+// 
+// Some helper functions or structs.
+// 						              - WuYu, 2018.06.
+// =============================================================================
 #ifndef TESTHELPER_H	// 用预处理器变量实现头文件保护符
 #define TESTHELPER_H	// 在某个cpp中此h文件可能被直接或间接包含多次
 						// 这样做目的是防止出现类型重复定义的编译错误
 
 #define MCPP11   // 标注C++11新特性
 
-#include <iostream>
-#include <string>
-
-#include "ConsoleTextColorReseter.h"
+#include "ConsoleUtility.h"
 
 
 // 头文件中最好不要用using声明，当此头文件被包含到其他cpp时，
@@ -89,15 +91,57 @@ public:
 };
 
 
+// 地理坐标点
+class Coordinate
+{
+public:
+	constexpr Coordinate( double lon, double lat ) 
+		: m_Longitude( lon ), m_Latitude( lat ) {}	MCPP11
+
+	constexpr double Longitude() const { return m_Longitude; }
+	constexpr double Latitude() const { return m_Latitude; }
+
+	/* C++14 constexpr */ void SetLongitude( double lon ) { m_Longitude = lon; }
+	/* C++14 constexpr */ void SetLatitude( double lat ) { m_Latitude = lat; }
+
+	friend ostream & operator <<( ostream &ostm, const Coordinate &obj )
+	{
+		return ostm << "( " << obj.m_Longitude << ", " << obj.m_Latitude << " )";
+	}
+
+private:
+	// 经纬度
+	double m_Longitude;
+	double m_Latitude;
+};
+
+// 计算两点的中点坐标
+constexpr Coordinate MidPoint( const Coordinate &coord1, const Coordinate &coord2 )	MCPP11
+{
+	return { ( coord1.Longitude() + coord2.Longitude() ) / 2,
+		( coord1.Latitude() + coord2.Latitude() ) / 2 };
+}
+
+// 计算整数的阶乘
+constexpr int CalFactorial( int n )	MCPP11
+{
+	/*int f = 1;
+	for( int i = n; i >= i; --i )
+		f *= i;
+	return f;*/
+	return n <= 1 ? 1 : ( n * CalFactorial( n - 1 ) );
+}
+
+
 inline void StartOneTest( const char *msg = nullptr MCPP11 )
 {
 	CONSOLE_COLOR_AUTO_RESET;
 
-	SetConsoleTextColor( 12 );
+	SetConsoleTextColor( CmdColor_Red );
 	cout << endl << "*********************************"
 		"*********************************" << endl;
 
-	SetConsoleTextColor( 10 );
+	SetConsoleTextColor( CmdColor_Green );
 	if ( msg )
 		cout << msg << endl;
 }

@@ -8,7 +8,9 @@ int _VOutOfFunction;   // 函数体外的变量，书上说函数外变量
 					   // 不能以_开头或_大写字母开头，但这里没错
 extern int VChapter02extern = 2;   // 有初始化才是定义，不能在函数内初始化
 
-void Chapter02::Run()
+
+// 基础类型
+void Test_BaseType()
 {
 	// char有三个相关的类型，其中char并不能保证是有符号的，
 	// 所以使用中如果确定需要使用有（无）符号，最好标明
@@ -30,9 +32,10 @@ void Chapter02::Run()
 
 
 	StartOneTest( "有、无符号类型共同参与计算" );
+	using UI = unsigned int;	MCPP11	// 别名声明
 	unsigned u1 = 10, u2 = 40;
-	int i = -42;
-	cout << u1 + i << endl << u1 * i << endl;   // i会转为无符号再计算
+	int i1 = -42;
+	cout << u1 + i1 << endl << u1 * i1 << endl;   // i会转为无符号再计算
 	
 	// 如果两个无符号计算产生负值，结果会按溢出处理
 	// unsigned maximum = 4294967295, u1 - u2 = -30, 
@@ -55,7 +58,7 @@ void Chapter02::Run()
 	cout <<"utf8字符串长度为：" << strlen( cs1 ) << endl;
 	cout << "宽字符串长度为：" << wcslen( wcs1 ) << endl;
 
-	unsigned int u3 = 245u;
+	UI u3 = 245u;
 	long l1 = 45342342L;
 	cout << u3 << " " << l1 << endl;
 
@@ -66,14 +69,27 @@ void Chapter02::Run()
 	streamsize dft_precision = cout.precision( 15 );
 	cout <<  f1 << "\t" << d1 << endl;
 	cout.precision( dft_precision );
+
+	StartOneTest( "全局变量声明和定义分离" );
+	int VChapter02extern = 5;   // 局部会覆盖全局，想用全局的话需要用::显式访问
+	cout << VChapter02extern << " " << ::VChapter02extern << endl;
 	
 
+	// 假设有两个重载函数：void foo( int i );	void foo( char *p );
+	// 引入 nullptr 的目的是避免二义性，过去的NULL和0等价，
+	// 调用foo( NULL )时就会引起混淆，现在调用foo( nullptr )将明确地调用第二个重载
+	StartOneTest( nullptr );	MCPP11
+}
+
+// 变量初始化
+void Test_Initialization()
+{
 	StartOneTest( "C++11列表初始化" );
-	int i5{ 567 }; MCPP11   // C++11列表初始化更严格，类型必须匹配，这里不能是小数
+	int i5{ 567 };	MCPP11   // C++11列表初始化更严格，类型必须匹配，这里不能是小数
 	map< string, TSPoint > map1 = { { "point1", { 1.1, 2.2 } }, 
 									{ "point2", { 2.2, 3.3 } } };
 	cout << i5 << endl;
-	for( auto &i : map1 ) MCPP11
+	for( auto &i : map1 )	MCPP11
 		cout << i.first << ": " << i.second << endl;
 	
 
@@ -87,19 +103,11 @@ void Chapter02::Run()
 	TCPoint cp1;		// 成员变量也会进行默认初始化，当然仅针对聚合类）来初始化对象。
 	QuadraticPoly qp1, qp2{};
 	cout << sp1 << endl << cp1 << endl << qp1 << endl << qp2 << endl;
-	
+}
 
-	StartOneTest( "全局变量声明和定义分离" );
-	int VChapter02extern = 5;   // 局部会覆盖全局，想用全局的话需要用::显式访问
-	cout << VChapter02extern << " " << ::VChapter02extern << endl;
-	
-
-	// 假设有两个重载函数：void foo( int i );	void foo( char *p );
-	// 引入 nullptr 的目的是避免二义性，过去的NULL和0等价，
-	// 调用foo( NULL )时就会引起混淆，现在调用foo( nullptr )将明确地调用第二个重载
-	StartOneTest( nullptr );MCPP11
-
-
+// 复合类型
+void Test_CompoundTypes()
+{
 	StartOneTest( "复合类型" );
 	// 复合类型声明的组成 = basetype + 声明符；
 	// 声明符 = 类型修饰符（*、&等） + 变量名
@@ -114,13 +122,16 @@ void Chapter02::Run()
 	
 	r6 = &i7;
 	cout << "通过指针的引用，间接修改了p6的指向，现在p6指向的整数值是：" << *p6 << endl;
+}
 
-
+// const相关
+void Test_Const()
+{
 	StartOneTest( "const的几个细节" );
 	// 不同于常规引用，const引用可以绑定不匹配类型的变量(r7)、表达式(r8)、字面值(r9)；
 	// 原理：编译器构造了一个不可见的临时（变）量，const引用其实绑定的是这个临时量；
 	double d2 = 3.14;
-	int i8= 10;
+	int i7 = 100, i8= 10;
 	const int &r7 = d2,		/* int tmp_d2 = ( int )d2; */
 		&r8 = ( d2 + i8 ),	/* int tmp_exp = ( int )( d2 + i8 ); */
 		&r9 = 5.5;			/* int tmp_num = ( int )5.5; */
@@ -135,4 +146,34 @@ void Chapter02::Run()
 	*p9 += 5;		// correct：p9的指向不能变，但它指向的数字可以改动，于是i8的值加了5
 	// p9 = &i7;	// error
 	cout << *p7 << " " << i8 << endl;
+
+
+	StartOneTest( "新关键词\"constexpr\"" );
+	// 基本的理解：
+	// const—并不强调是运行时还是编译期常量；
+	// constexpr—标明的变量或者函数，必须在编译期就能计算出具体的值；
+	//	且在C++14中放宽了constexpr函数内部的代码规范，可以使用循环、临时变量等，
+	//	而C++11要求只有一条return语句（但可以用递归）；
+	int ary[ CalFactorial( 4 ) ] = { 1, 2, 3 };	MCPP11
+	for( auto i : ary )
+		cout << i << " ";
+	cout << endl;
+
+	// constexpr的另外一个优点是可以实现自定义类的字面值，这些字面值储存在高速的只读内存区域；
+	// 可以加快程序的运行速度。例如，定义北京和上海的坐标的字面值，然后计算两地中点，同样是字面值；
+	constexpr  Coordinate beijing( 116.398277, 39.909214 ), shanghai( 121.458206, 31.116520 );
+
+	// 在Visual Studio中，不需要启动程序，鼠标放在这个变量上，即可看到坐标的计算结果！
+	constexpr  Coordinate midOfTwoCity = MidPoint( beijing, shanghai );
+	cout << "北京：" << beijing << endl << "上海：" << shanghai << endl 
+		<< "两地中点：" << midOfTwoCity << endl;
+}
+
+Chapter02::Chapter02()
+{
+	m_Title = "第二章 变量和基本类型";
+	m_TestCases[ 1 ] = SectionTest( "基础类型", &Test_BaseType );
+	m_TestCases[ 2 ] = SectionTest( "变量初始化", &Test_Initialization );
+	m_TestCases[ 3 ] = SectionTest( "复合类型", &Test_CompoundTypes );
+	m_TestCases[ 4 ] = SectionTest( "const相关", &Test_Const );
 }

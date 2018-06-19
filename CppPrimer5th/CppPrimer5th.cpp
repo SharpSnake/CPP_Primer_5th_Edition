@@ -6,14 +6,36 @@
 #include "Chapter01.h"
 #include "Chapter02.h"
 
+using namespace std;
+
+
+map< int, ChapterBase* > Chapters;
+
 int main()
 {
 	ConsoleTextColorReseter::Init();
+	
+	Chapters[ 1 ] = new Chapter01();
+	Chapters[ 2 ] = new Chapter02();
 
-	TestBase *test = new Chapter02();
-	test->Run();
-	delete test;
-	test = nullptr;
+	while ( true )
+	{
+		int code = InputCodeByMap< ChapterBase* >( "选择章节代号", Chapters );
+		if( code == CONSOLE_CODE_EXIT )
+			break;
+
+		Chapters[ code ]->RunLoop();
+
+		if( !InputYesOrNo( "是否继续选择其他章节测试？" ) )
+			break;
+	}
+	
+	for ( auto &i : Chapters )
+	{
+		delete i.second;
+		i.second = nullptr;
+	}
+	Chapters.clear();
 
 	system( "pause" );
 	return 0;

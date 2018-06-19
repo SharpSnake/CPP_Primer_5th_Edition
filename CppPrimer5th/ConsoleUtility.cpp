@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ConsoleTextColorReseter.h"
+#include "ConsoleUtility.h"
 
 #ifdef WIN32
 extern HANDLE HConsoleWindow = nullptr;
