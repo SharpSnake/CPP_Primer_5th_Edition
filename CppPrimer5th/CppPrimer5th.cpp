@@ -5,6 +5,7 @@
 #include "TestHelper.h"
 #include "Chapter01.h"
 #include "Chapter02.h"
+#include "Chapter03.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ int main()
 	
 	Chapters[ 1 ] = new Chapter01();
 	Chapters[ 2 ] = new Chapter02();
+	Chapters[ 3 ] = new Chapter03();
 
 	while ( true )
 	{

@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 
+using UI = unsigned int;	MCPP11	// 别名声明
+
 int _VOutOfFunction;   // 函数体外的变量，书上说函数外变量
 					   // 不能以_开头或_大写字母开头，但这里没错
 extern int VChapter02extern = 2;   // 有初始化才是定义，不能在函数内初始化
@@ -32,8 +34,7 @@ void Test_BaseType()
 
 
 	StartOneTest( "有、无符号类型共同参与计算" );
-	using UI = unsigned int;	MCPP11	// 别名声明
-	unsigned u1 = 10, u2 = 40;
+	UI u1 = 10, u2 = 40;
 	int i1 = -42;
 	cout << u1 + i1 << endl << u1 * i1 << endl;   // i会转为无符号再计算
 	
@@ -169,6 +170,46 @@ void Test_Const()
 		<< "两地中点：" << midOfTwoCity << endl;
 }
 
+void Test_AutoType()
+{
+	// 用于测试的变量
+	int i1 = 5, i2 = 9, &r1 = i1, *p1 = &i1, *const p2 = p1;
+	const int ci1 = i1, &cr1 = ci1, *cp1 = &ci1;
+
+	StartOneTest( "关键字auto" );
+	// 相对来说，auto比较"懒惰"，会忽略top-const和引用类型，需要手动添加相关修饰符
+	auto au1 = r1;			PrintTypeName( au1 );// int
+	auto &au2 = r1;			PrintTypeName( au2 );// int &
+	auto au3 = p1;			PrintTypeName( au3 );// int *
+	
+	auto au4 = cr1;			PrintTypeName( au4 );// int
+	const auto au5 = cr1;	PrintTypeName( au5 );// const int
+	auto au6 = cr1;			PrintTypeName( au6 );// int
+	auto &au7 = cr1;		PrintTypeName( au7 );// const int &，引用ci1，保留了low-const
+	auto au8 = p2;			PrintTypeName( au8 );// int *，忽略了p2的top-const
+	auto au9 = cp1;			PrintTypeName( au9 );// const int *，指向cil，保留了low-const
+	/* auto总结：如果希望声明const或者引用类型，需要手动添加修饰符，别指望auto自动推导 */
+
+	StartOneTest( "关键字decltype" );
+	// 相对auto，decltype的应用更加广泛，且更"实事求是"，会保留top-const和引用类型；
+	// decltype不会真的去计算表达式的值，或调用表达式中的函数，仅仅是推导结果的类型；
+	decltype( r1 ) dt1 = i1;MCPP11	PrintTypeName( dt1 );// int &
+	decltype( p2 ) dt2 = &i1;		PrintTypeName( dt2 );// int *const
+	decltype( cr1 ) dt3 = i2;		PrintTypeName( dt3 );// const int &
+	decltype( r1 * 0.5F ) dt4;		PrintTypeName( dt4 );// float
+	decltype( MidPoint( { 1, 3 }, { 2, 4 } ) ) dt5{ 0, 0 };	PrintTypeName( dt5 );// Coordinate
+
+	// 以下是一些特殊情况，需要牢记：
+	// 1、指针的解引用操作，结果是引用类型（所以必须初始化）
+	decltype( *p1 ) dt6 = i2;		PrintTypeName( dt6 );// int &
+	
+	// 2、变量用括号括起来，结果是引用类型（所以必须初始化）
+	decltype( ( i1 ) ) dt7 = i2;	PrintTypeName( dt7 );// int &
+
+	// 3、赋值表达式，结果是引用类型（所以必须初始化）
+	decltype( i2 = i1 ) dt8 = i2;	PrintTypeName( dt8 );// int &
+}
+
 Chapter02::Chapter02()
 {
 	m_Title = "第二章 变量和基本类型";
@@ -176,4 +217,5 @@ Chapter02::Chapter02()
 	m_TestCases[ 2 ] = SectionTest( "变量初始化", &Test_Initialization );
 	m_TestCases[ 3 ] = SectionTest( "复合类型", &Test_CompoundTypes );
 	m_TestCases[ 4 ] = SectionTest( "const相关", &Test_Const );
+	m_TestCases[ 5 ] = SectionTest( "自动类型", &Test_AutoType );
 }

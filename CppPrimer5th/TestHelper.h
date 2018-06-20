@@ -9,12 +9,21 @@
 
 #define MCPP11   // 标注C++11新特性
 
+#include <boost/type_index.hpp>	// this library of boost is head-only
 #include "ConsoleUtility.h"
 
 
 // 头文件中最好不要用using声明，当此头文件被包含到其他cpp时，
 // 可能会引发意想不到的名字冲突，所以最好由cpp自己决定使用哪些using声明
 using namespace std;
+
+
+// 打印一个变量的确切类型名称，std的typeid( var ).name()不完整，所以借助boost
+#define PrintTypeName( var )\
+{\
+	cout << "Type of \"" << #var << "\"\t:\t";\
+	cout << boost::typeindex::type_id_with_cvr< decltype( var ) >().pretty_name() << endl;\
+}
 
 
 // 测试用结构体：二维点
@@ -128,7 +137,7 @@ constexpr int CalFactorial( int n )	MCPP11
 	/*int f = 1;
 	for( int i = n; i >= i; --i )
 		f *= i;
-	return f;*/
+	return f;*/	// C++14
 	return n <= 1 ? 1 : ( n * CalFactorial( n - 1 ) );
 }
 
