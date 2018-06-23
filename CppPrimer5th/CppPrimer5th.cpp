@@ -14,7 +14,7 @@ map< int, ChapterBase* > Chapters;
 
 int main()
 {
-	ConsoleTextColorReseter::Init();
+	ConsoleInit();
 	
 	Chapters[ 1 ] = new Chapter01();
 	Chapters[ 2 ] = new Chapter02();

@@ -125,6 +125,16 @@ void Test_CompoundTypes()
 	cout << "通过指针的引用，间接修改了p6的指向，现在p6指向的整数值是：" << *p6 << endl;
 }
 
+// 计算整数的阶乘
+constexpr int _CalFactorial( int n )	MCPP11
+{
+	/*int f = 1;
+	for( int i = n; i >= i; --i )
+	f *= i;
+	return f;*/	// C++14
+	return n <= 1 ? 1 : ( n * _CalFactorial( n - 1 ) );
+}
+
 // const相关
 void Test_Const()
 {
@@ -155,7 +165,7 @@ void Test_Const()
 	// constexpr—标明的变量或者函数，必须在编译期就能计算出具体的值；
 	//	且在C++14中放宽了constexpr函数内部的代码规范，可以使用循环、临时变量等，
 	//	而C++11要求只有一条return语句（但可以用递归）；
-	int ary[ CalFactorial( 4 ) ] = { 1, 2, 3 };	MCPP11
+	int ary[ _CalFactorial( 4 ) ] = { 1, 2, 3 };	MCPP11
 	for( auto i : ary )
 		cout << i << " ";
 	cout << endl;

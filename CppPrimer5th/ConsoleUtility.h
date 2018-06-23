@@ -37,6 +37,17 @@ enum ConsoleTextColor
 	CmdColor_White = 15,
 };
 
+// 控制台相关的初始化
+inline void ConsoleInit( void )
+{
+#ifdef WIN32
+	HConsoleWindow = GetStdHandle( STD_OUTPUT_HANDLE );
+#endif
+
+	// 控制台打印bool变量将显示"true"或者"false"，默认是1或0
+	cout.setf( ios_base::boolalpha );
+}
+
 
 // 控制台文字颜色自动重置器
 class ConsoleTextColorReseter
@@ -44,13 +55,6 @@ class ConsoleTextColorReseter
 	unsigned m_OriginColor = 0;
 
 public:
-	static void Init(void)
-	{
-#ifdef WIN32
-		HConsoleWindow = GetStdHandle( STD_OUTPUT_HANDLE );
-#endif
-	}
-
 	ConsoleTextColorReseter()
 	{
 #ifdef WIN32

@@ -48,6 +48,13 @@ public:
 	double x;
 	double y;
 
+	// 点平移
+	void Offset( double xoff, double yoff )
+	{
+		x += xoff;
+		y += yoff;
+	}
+
 	friend ostream & operator <<( ostream &ostm, const TCPoint &obj )
 	{
 		return ostm << "x：" << obj.x << "， y：" << obj.y;
@@ -79,9 +86,8 @@ public:
 class TCPerson
 {
 private:
-	MCPP11
-	string m_name = "";
-	unsigned int m_age = 0;
+	string m_name = "穆阿迪布";	MCPP11	// 类内初始值
+	unsigned int m_age = 4000;
 
 public:
 	TCPerson() {}
@@ -129,16 +135,6 @@ constexpr Coordinate MidPoint( const Coordinate &coord1, const Coordinate &coord
 {
 	return { ( coord1.Longitude() + coord2.Longitude() ) / 2,
 		( coord1.Latitude() + coord2.Latitude() ) / 2 };
-}
-
-// 计算整数的阶乘
-constexpr int CalFactorial( int n )	MCPP11
-{
-	/*int f = 1;
-	for( int i = n; i >= i; --i )
-		f *= i;
-	return f;*/	// C++14
-	return n <= 1 ? 1 : ( n * CalFactorial( n - 1 ) );
 }
 
 
