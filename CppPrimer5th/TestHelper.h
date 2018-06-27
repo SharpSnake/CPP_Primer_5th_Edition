@@ -9,7 +9,10 @@
 
 #define MCPP11   // 标注C++11新特性
 
+#include <cstdlib>
+#include <ctime>
 #include <boost/type_index.hpp>	// this library of boost is head-only
+
 #include "ConsoleUtility.h"
 
 
@@ -24,6 +27,11 @@ using namespace std;
 	cout << "Type of \"" << #var << "\"\t:\t";\
 	cout << boost::typeindex::type_id_with_cvr< decltype( var ) >().pretty_name() << endl;\
 }
+
+
+class QuadraticPoly;
+class TCPerson;
+class Coordinate;
 
 
 // 测试用结构体：二维点
@@ -48,11 +56,17 @@ public:
 	double x;
 	double y;
 
-	// 点平移
+	// 平移
 	void Offset( double xoff, double yoff )
 	{
 		x += xoff;
 		y += yoff;
+	}
+
+	// 求和
+	TCPoint operator +( const TCPoint &pnt ) const
+	{
+		return { this->x + pnt.x, this->y + pnt.y };
 	}
 
 	friend ostream & operator <<( ostream &ostm, const TCPoint &obj )
@@ -85,13 +99,13 @@ public:
 // 测试用类：人
 class TCPerson
 {
-private:
+protected:
 	string m_name = "穆阿迪布";	MCPP11	// 类内初始值
 	unsigned int m_age = 4000;
 
 public:
 	TCPerson() {}
-	~TCPerson() {}
+	virtual ~TCPerson() {}
 
 public:
 	friend istream & operator >>( istream &istm, TCPerson &obj )
@@ -103,6 +117,35 @@ public:
 	{
 		return ostm << "姓名：" << obj.m_name << "， 年龄：" << obj.m_age;
 	}
+};
+
+
+// 测试用类：男人
+class TCMan : public TCPerson
+{
+protected:
+	// 胡须长度，单位cm
+	double m_BeardLength = 10;
+
+public:
+	TCMan() {}
+	~TCMan() {}
+
+	double BeardLength() const { return m_BeardLength; }
+};
+
+
+// 测试用类：女人
+class TCWomen : public TCPerson
+{
+protected:
+	// 手提包品牌
+	string m_HandbagBrand = "LV";
+public:
+	TCWomen() {}
+	~TCWomen() {}
+
+	string HandbagBrand() const { return m_HandbagBrand; }
 };
 
 
@@ -122,6 +165,12 @@ public:
 	friend ostream & operator <<( ostream &ostm, const Coordinate &obj )
 	{
 		return ostm << "( " << obj.m_Longitude << ", " << obj.m_Latitude << " )";
+	}
+
+	// 地理坐标向一般点的转换
+	operator TCPoint()
+	{
+		return { m_Longitude, m_Latitude };
 	}
 
 private:
@@ -149,6 +198,22 @@ inline void StartOneTest( const char *msg = nullptr MCPP11 )
 	SetConsoleTextColor( CmdColor_Green );
 	if ( msg )
 		cout << msg << endl;
+}
+
+// 生成某个范围内的随机整数，不做b>a的检测
+inline int Randi( const int &a, const int &b )
+{
+	return a + std::rand() % ( b - a + 1 /* this is the range of [ a, b ]*/ );
+}
+
+// 测试的初始化
+inline void TestInit( void )
+{
+	// 初始化随机数发生器
+	std::srand( std::time( nullptr ) );
+
+	// 初始化控制台
+	ConsoleInit();
 }
 
 #endif // !TESTHELPER_H

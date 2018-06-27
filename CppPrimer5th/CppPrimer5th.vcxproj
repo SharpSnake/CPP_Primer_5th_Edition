@@ -151,6 +151,7 @@
     <ClInclude Include="Chapter01.h" />
     <ClInclude Include="Chapter02.h" />
     <ClInclude Include="Chapter03.h" />
+    <ClInclude Include="Chapter04.h" />
     <ClInclude Include="ConsoleUtility.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestBase.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="Chapter01.cpp" />
     <ClCompile Include="Chapter02.cpp" />
     <ClCompile Include="Chapter03.cpp" />
+    <ClCompile Include="Chapter04.cpp" />
     <ClCompile Include="ConsoleUtility.cpp" />
     <ClCompile Include="CppPrimer5th.cpp" />
     <ClCompile Include="stdafx.cpp">

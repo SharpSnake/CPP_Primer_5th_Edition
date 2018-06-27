@@ -6,6 +6,7 @@
 #include "Chapter01.h"
 #include "Chapter02.h"
 #include "Chapter03.h"
+#include "Chapter04.h"
 
 using namespace std;
 
@@ -14,11 +15,12 @@ map< int, ChapterBase* > Chapters;
 
 int main()
 {
-	ConsoleInit();
+	TestInit();
 	
 	Chapters[ 1 ] = new Chapter01();
 	Chapters[ 2 ] = new Chapter02();
 	Chapters[ 3 ] = new Chapter03();
+	Chapters[ 4 ] = new Chapter04();
 
 	while ( true )
 	{
