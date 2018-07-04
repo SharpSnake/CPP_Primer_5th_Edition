@@ -1,47 +1,16 @@
-// CppPrimer5th.cpp : 定义控制台应用程序的入口点。
-//
-
 #include "stdafx.h"
 #include "TestHelper.h"
-#include "Chapter01.h"
-#include "Chapter02.h"
-#include "Chapter03.h"
-#include "Chapter04.h"
+#include "TestBase.h"
 
-using namespace std;
-
-
-map< int, ChapterBase* > Chapters;
-
-int main()
+// 【理解程序主函数的参数】
+// argc : 外部总共向主函数传递了几个参数（包括程序名）
+// argv : argv[ 0 ]必定是程序名，argv[ argc ]必定是0，
+// 从argv[ 1 ]开始才是真正传递进来的参数；
+int main( int argc, char **argv )
 {
-	TestInit();
-	
-	Chapters[ 1 ] = new Chapter01();
-	Chapters[ 2 ] = new Chapter02();
-	Chapters[ 3 ] = new Chapter03();
-	Chapters[ 4 ] = new Chapter04();
-
-	while ( true )
-	{
-		int code = InputCodeByMap< ChapterBase* >( "选择章节代号", Chapters );
-		if( code == CONSOLE_CODE_EXIT )
-			break;
-
-		Chapters[ code ]->RunLoop();
-
-		if( !InputYesOrNo( "是否继续选择其他章节测试？" ) )
-			break;
-	}
-	
-	for ( auto &i : Chapters )
-	{
-		delete i.second;
-		i.second = nullptr;
-	}
-	Chapters.clear();
-
+	HelperInit();
+	RunMainLoop();
 	system( "pause" );
-	return 0;
+	return 0;	// 返回0表示没问题，其他不同的代号表示不同的问题
 }
 

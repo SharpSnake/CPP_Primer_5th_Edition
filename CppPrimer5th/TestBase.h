@@ -26,7 +26,7 @@ private:
 	SectionMethod m_Method = nullptr;
 
 public:
-	SectionTest() : m_Title( "" ), m_Method( nullptr ) {}
+	SectionTest() {}
 
 	SectionTest( const std::string &title, SectionMethod method ) 
 		: m_Title( title ), m_Method( method ) {}
@@ -47,7 +47,7 @@ public:
 // 章测试的基类
 class ChapterBase
 {
-protected:
+private:
 	// 本章的标题
 	std::string m_Title;
 
@@ -55,10 +55,13 @@ protected:
 	std::map< int, SectionTest > m_TestCases;
 	
 public:
-	ChapterBase() : m_TestCases() {}
-	virtual ~ChapterBase() { m_TestCases.clear(); }
+	ChapterBase( const std::string &title ) : m_Title( title ) {}
+	~ChapterBase() {}
 	
 public:
+	// 添加一个小节测试
+	void AddSection( const int &code, const std::string &title, SectionMethod method );
+
 	// 运行章节测试
 	void RunLoop();
 
@@ -68,5 +71,19 @@ public:
 		return o << obj->m_Title;
 	}
 };
+
+
+// 各个章的初始化，返回一个章节实例
+ChapterBase* Chapter01Init();
+ChapterBase* Chapter02Init();
+ChapterBase* Chapter03Init();
+ChapterBase* Chapter04Init();
+ChapterBase* Chapter05Init();
+ChapterBase* Chapter06Init();
+
+
+// 测试主循环
+void RunMainLoop();
+
 
 #endif // !TESTBASE_H

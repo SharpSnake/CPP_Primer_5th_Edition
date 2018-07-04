@@ -1,8 +1,11 @@
 #include "stdafx.h"
-#include "Chapter02.h"
-#include "TestHelper.h"
+
 #include <vector>
 #include <map>
+
+#include "TestBase.h"
+#include "TestHelper.h"
+#include "Chapter02.h"
 
 using UI = unsigned int;	MCPP11	// 别名声明
 
@@ -125,16 +128,6 @@ void Test_CompoundTypes()
 	cout << "通过指针的引用，间接修改了p6的指向，现在p6指向的整数值是：" << *p6 << endl;
 }
 
-// 计算整数的阶乘
-constexpr int _CalFactorial( int n )	MCPP11
-{
-	/*int f = 1;
-	for( int i = n; i >= i; --i )
-	f *= i;
-	return f;*/	// C++14
-	return n <= 1 ? 1 : ( n * _CalFactorial( n - 1 ) );
-}
-
 // const相关
 void Test_Const()
 {
@@ -165,7 +158,7 @@ void Test_Const()
 	// constexpr—标明的变量或者函数，必须在编译期就能计算出具体的值；
 	//	且在C++14中放宽了constexpr函数内部的代码规范，可以使用循环、临时变量等，
 	//	而C++11要求只有一条return语句（但可以用递归）；
-	int ary[ _CalFactorial( 4 ) ] = { 1, 2, 3 };	MCPP11
+	int ary[ Factorial( 4 ) ] = { 1, 2, 3 };	MCPP11
 	for( auto i : ary )
 		cout << i << " ";
 	cout << endl;
@@ -220,12 +213,13 @@ void Test_AutoType()
 	decltype( i2 = i1 ) dt8 = i2;	PrintTypeName( dt8 );// int &
 }
 
-Chapter02::Chapter02()
+ChapterBase* Chapter02Init()
 {
-	m_Title = "第二章 变量和基本类型";
-	m_TestCases[ 1 ] = SectionTest( "基础类型", &Test_BaseType );
-	m_TestCases[ 2 ] = SectionTest( "变量初始化", &Test_Initialization );
-	m_TestCases[ 3 ] = SectionTest( "复合类型", &Test_CompoundTypes );
-	m_TestCases[ 4 ] = SectionTest( "const相关", &Test_Const );
-	m_TestCases[ 5 ] = SectionTest( "自动类型", &Test_AutoType );
+	ChapterBase *ch02 = new ChapterBase( "第二章 变量和基本类型" );
+	ch02->AddSection( 1, "基础类型", &Test_BaseType );
+	ch02->AddSection( 2, "变量初始化", &Test_Initialization );
+	ch02->AddSection( 3, "复合类型", &Test_CompoundTypes );
+	ch02->AddSection( 4, "const相关", &Test_Const );
+	ch02->AddSection( 5, "自动类型", &Test_AutoType );
+	return ch02;
 }

@@ -4,7 +4,7 @@
 #include <bitset>	// 借助这个容器测试位运算
 #include <cstring>	// memcpy
 
-#include "Chapter04.h"
+#include "TestBase.h"
 #include "TestHelper.h"
 
 
@@ -146,7 +146,7 @@ void Test_ImplicitConversion()
 	cout << "1、整型、浮点混合的算式，整型首先转为对应的浮点型: " << ix << endl;
 
 	// 小整形：bool, char, signed char, unsigned char, short, and unsigned short
-	// 首先提升到大整型int（如果数值范围够的话），活着unsigned int；
+	// 首先提升到大整型int（如果数值范围够的话），或着unsigned int；
 	// 如果算式里有浮点，转换顺序是：小整形先转为int，然后int再转为浮点；
 	bool ba = true, bb = false;
 	char ca = 'A';	// 'A'的ASCII码是65
@@ -260,13 +260,14 @@ void Test_ExpressionNew()
 	cout << endl;
 }
 
-Chapter04::Chapter04()
+ChapterBase* Chapter04Init()
 {
-	m_Title = "第四章 表达式";
-	m_TestCases[ 1 ] = SectionTest( "基本概念", &Test_ExpressionBase );
-	m_TestCases[ 2 ] = SectionTest( "位运算", &Test_BitwiseOperator );
-	m_TestCases[ 3 ] = SectionTest( "其他运算符", &Test_OtherOperator );
-	m_TestCases[ 4 ] = SectionTest( "隐式类型转换", &Test_ImplicitConversion );
-	m_TestCases[ 5 ] = SectionTest( "显式类型转换", &Test_ExplicitConversion );
-	m_TestCases[ 6 ] = SectionTest( "新特性", &Test_ExpressionNew );
+	ChapterBase *ch04 = new ChapterBase( "第四章 表达式" );
+	ch04->AddSection( 1, "基本概念", &Test_ExpressionBase );
+	ch04->AddSection( 2, "位运算", &Test_BitwiseOperator );
+	ch04->AddSection( 3, "其他运算符", &Test_OtherOperator );
+	ch04->AddSection( 4, "隐式类型转换", &Test_ImplicitConversion );
+	ch04->AddSection( 5, "显式类型转换", &Test_ExplicitConversion );
+	ch04->AddSection( 6, "新特性", &Test_ExpressionNew );
+	return ch04;
 }

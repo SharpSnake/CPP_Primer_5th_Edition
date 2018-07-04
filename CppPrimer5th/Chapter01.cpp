@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <fstream>
-#include "Chapter01.h"
+
+#include "TestBase.h"
 #include "TestHelper.h"
 
 void Test_CinAndCout()
@@ -40,9 +41,10 @@ void Test_FileRedirection()
 	fcout.close();
 }
 
-Chapter01::Chapter01()
+ChapterBase* Chapter01Init()
 {
-	m_Title = "第一章 简介";
-	m_TestCases[ 1 ] = SectionTest( "标准输入输出", &Test_CinAndCout );
-	m_TestCases[ 2 ] = SectionTest( "文件重定向", &Test_FileRedirection );
+	ChapterBase *ch01 = new ChapterBase( "第一章 简介" );
+	ch01->AddSection( 1, "标准输入输出", &Test_CinAndCout );
+	ch01->AddSection( 2, "文件重定向", &Test_FileRedirection );
+	return ch01;
 }

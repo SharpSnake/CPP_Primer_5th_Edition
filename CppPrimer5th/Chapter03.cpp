@@ -7,7 +7,7 @@
 #include <iterator>
 #include <algorithm>
 
-#include "Chapter03.h"
+#include "TestBase.h"
 #include "TestHelper.h"
 
 using namespace std;
@@ -265,11 +265,12 @@ void Test_ArrayNew()
 	_PrintArray( v4 );
 }
 
-Chapter03::Chapter03()
+ChapterBase* Chapter03Init()
 {
-	m_Title = "第三章 字符串、向量和数组";
-	m_TestCases[ 1 ] = SectionTest( "std::string", &Test_StdString );
-	m_TestCases[ 2 ] = SectionTest( "std::vector", &Test_StdVector );
-	m_TestCases[ 3 ] = SectionTest( "数组的类型声明", &Test_ArrayDeclaration );
-	m_TestCases[ 4 ] = SectionTest( "数组的新特性", &Test_ArrayNew );
+	ChapterBase *ch03 = new ChapterBase( "第三章 字符串、向量和数组" );
+	ch03->AddSection( 1, "std::string", &Test_StdString );
+	ch03->AddSection( 2, "std::vector", &Test_StdVector );
+	ch03->AddSection( 3, "数组的类型声明", &Test_ArrayDeclaration );
+	ch03->AddSection( 4, "数组的新特性", &Test_ArrayNew );
+	return ch03;
 }

@@ -186,6 +186,31 @@ constexpr Coordinate MidPoint( const Coordinate &coord1, const Coordinate &coord
 		( coord1.Latitude() + coord2.Latitude() ) / 2 };
 }
 
+// 计算整数的阶乘
+constexpr int Factorial( int n )	MCPP11
+{
+	/*int f = 1;
+	for( int i = n; i > 1; --i )
+	f *= i;
+	return f;*/	// C++14
+	return n <= 1 ? 1 : ( n * Factorial( n - 1 ) );
+}
+
+// 生成某个范围内的随机整数，不做b>a的检测
+inline int Randi( const int &a, const int &b )
+{
+	return a + std::rand() % ( b - a + 1 /* this is the range of [ a, b ]*/ );
+}
+
+// 测试的初始化
+inline void HelperInit( void )
+{
+	// 初始化随机数发生器
+	std::srand( std::time( nullptr ) );
+
+	// 初始化控制台
+	ConsoleInit();
+}
 
 inline void StartOneTest( const char *msg = nullptr MCPP11 )
 {
@@ -200,20 +225,5 @@ inline void StartOneTest( const char *msg = nullptr MCPP11 )
 		cout << msg << endl;
 }
 
-// 生成某个范围内的随机整数，不做b>a的检测
-inline int Randi( const int &a, const int &b )
-{
-	return a + std::rand() % ( b - a + 1 /* this is the range of [ a, b ]*/ );
-}
-
-// 测试的初始化
-inline void TestInit( void )
-{
-	// 初始化随机数发生器
-	std::srand( std::time( nullptr ) );
-
-	// 初始化控制台
-	ConsoleInit();
-}
 
 #endif // !TESTHELPER_H
