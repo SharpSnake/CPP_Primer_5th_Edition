@@ -9,11 +9,9 @@
 
 #define MCPP11   // 标注C++11新特性
 
-#include <cstdlib>
-#include <ctime>
-#include <boost/type_index.hpp>	// this library of boost is head-only
 
 #include "ConsoleUtility.h"
+#include "Functions.hpp"
 
 
 // 头文件中最好不要用using声明，当此头文件被包含到其他cpp时，
@@ -21,20 +19,24 @@
 using namespace std;
 
 
-// 打印一个变量的确切类型名称，std的typeid( var ).name()不完整，所以借助boost
-#define PrintTypeName( var )\
-{\
-	cout << "Type of \"" << #var << "\"\t:\t";\
-	cout << boost::typeindex::type_id_with_cvr< decltype( var ) >().pretty_name() << endl;\
-}
-
-
 class QuadraticPoly;
 class TCPerson;
 class Coordinate;
 
 
-// 测试用结构体：二维点
+// 编程语言
+enum ProgramLan
+{
+	Lan_CPP			= 0x001,
+	Lan_CSharp		= 0x002,
+	Lan_Java		= 0x004,
+	Lan_Matlab		= 0x008,
+	Lan_Python		= 0x010,
+	Lan_All			= Lan_CPP | Lan_CSharp | Lan_Java | Lan_Matlab | Lan_Python
+};
+
+
+// 测试用结构体：二维点，是聚合类
 struct TSPoint
 {
 	double x;
@@ -49,7 +51,8 @@ struct TSPoint
 	}
 };
 
-// 测试用类：二维点
+
+// 测试用类：二维点，是聚合类（Aggregate Class）
 class TCPoint
 {
 public:
@@ -104,10 +107,16 @@ protected:
 	unsigned int m_age = 4000;
 
 public:
-	TCPerson() {}
+	TCPerson() = default;
+	TCPerson( const string &name, unsigned age )
+		: m_name( name ), m_age( age ) {}
+
 	virtual ~TCPerson() {}
 
 public:
+	string Name() const { return m_name; }
+	unsigned Age() const { return m_age; }
+
 	friend istream & operator >>( istream &istm, TCPerson &obj )
 	{
 		return istm >> obj.m_name >> obj.m_age;
@@ -153,6 +162,8 @@ public:
 class Coordinate
 {
 public:
+	Coordinate() = default;
+
 	constexpr Coordinate( double lon, double lat ) 
 		: m_Longitude( lon ), m_Latitude( lat ) {}	MCPP11
 
@@ -186,32 +197,44 @@ constexpr Coordinate MidPoint( const Coordinate &coord1, const Coordinate &coord
 		( coord1.Latitude() + coord2.Latitude() ) / 2 };
 }
 
-// 计算整数的阶乘
-constexpr int Factorial( int n )	MCPP11
+
+// 字面值类型示例：地标
+class Placemark		MCPP11
 {
-	/*int f = 1;
-	for( int i = n; i > 1; --i )
-	f *= i;
-	return f;*/	// C++14
-	return n <= 1 ? 1 : ( n * Factorial( n - 1 ) );
-}
+public:
+	using ushort = unsigned short;
 
-// 生成某个范围内的随机整数，不做b>a的检测
-inline int Randi( const int &a, const int &b )
-{
-	return a + std::rand() % ( b - a + 1 /* this is the range of [ a, b ]*/ );
-}
+public:
+	// 当default为constexpr时，【每个】成员必须有类内初始值
+	constexpr Placemark() = default;
 
-// 测试的初始化
-inline void HelperInit( void )
-{
-	// 初始化随机数发生器
-	std::srand( std::time( nullptr ) );
+	Placemark( double x, double y, ushort h )
+		: m_Coord( x, y ), m_Height( h ) {}
 
-	// 初始化控制台
-	ConsoleInit();
-}
+	// 至少有一个constexpr构造，且函数体必须为【空】，且【每个】成员都要初始化，少一个都不行
+	constexpr Placemark( double x, double y, ushort h, const char *title )
+		: m_Coord( x, y ), m_Height( h ), m_Title( title ) {}
 
+	// 【不能】自定义析构函数
+
+public:
+	friend ostream& operator <<( ostream &o, const Placemark &p )
+	{
+		o   << "坐标：" << p.m_Coord << endl
+			<< "海拔：" << p.m_Height << endl
+			<< "名称：" << p.m_Title;
+		return o;
+	}
+private:
+	// 成员类型必须是内置类型，或者是其他自定义字面值类型；
+	// 类内初始值必须是【常量表达式】，或者使用自己的【constexpr构造函数】
+	Coordinate m_Coord{ 121, 36 };	// 类类型类内初始值只能用【列表初始化】
+	ushort m_Height = Factorial( 5 );
+	const char *m_Title = "天安门";
+};
+
+
+/////////////////////////////////////////////////////////////////////////////////
 inline void StartOneTest( const char *msg = nullptr MCPP11 )
 {
 	CONSOLE_COLOR_AUTO_RESET;
@@ -225,5 +248,11 @@ inline void StartOneTest( const char *msg = nullptr MCPP11 )
 		cout << msg << endl;
 }
 
+// 测试的初始化
+inline void HelperInit( void )
+{
+	FunctionsInit();
+	ConsoleInit();
+}
 
 #endif // !TESTHELPER_H

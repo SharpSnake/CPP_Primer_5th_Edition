@@ -22,6 +22,9 @@ using namespace std;
 // 声明某段代码需要自动重置控制台文字颜色
 #define CONSOLE_COLOR_AUTO_RESET ConsoleTextColorReseter tmpColorReseter;
 
+// 换两行
+#define endl2 endl << endl
+
 // 表示退出的代号
 #define CONSOLE_CODE_EXIT 0
 

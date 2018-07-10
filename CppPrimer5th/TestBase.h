@@ -80,6 +80,7 @@ ChapterBase* Chapter03Init();
 ChapterBase* Chapter04Init();
 ChapterBase* Chapter05Init();
 ChapterBase* Chapter06Init();
+ChapterBase* Chapter07Init();
 
 
 // ²âÊÔÖ÷Ñ­»·
