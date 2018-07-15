@@ -94,7 +94,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -148,6 +148,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryStream.h" />
     <ClInclude Include="Chapter02.h" />
     <ClInclude Include="Chapter06.h" />
     <ClInclude Include="Chapter07.h" />
@@ -166,6 +167,7 @@
     <ClCompile Include="Chapter05.cpp" />
     <ClCompile Include="Chapter06.cpp" />
     <ClCompile Include="Chapter07.cpp" />
+    <ClCompile Include="Chapter08.cpp" />
     <ClCompile Include="ConsoleUtility.cpp" />
     <ClCompile Include="CppPrimer5th.cpp" />
     <ClCompile Include="stdafx.cpp">

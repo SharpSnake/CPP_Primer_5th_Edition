@@ -37,6 +37,7 @@ void RunMainLoop()
 	Chapters[ 5 ] = Chapter05Init();
 	Chapters[ 6 ] = Chapter06Init();
 	Chapters[ 7 ] = Chapter07Init();
+	Chapters[ 8 ] = Chapter08Init();
 
 	// main loop
 	while ( true )
