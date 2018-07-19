@@ -30,14 +30,15 @@ map< int, ChapterBase* > Chapters{};
 void RunMainLoop()
 {
 	// some initialize stuff
-	Chapters[ 1 ] = Chapter01Init();
-	Chapters[ 2 ] = Chapter02Init();
-	Chapters[ 3 ] = Chapter03Init();
-	Chapters[ 4 ] = Chapter04Init();
-	Chapters[ 5 ] = Chapter05Init();
-	Chapters[ 6 ] = Chapter06Init();
-	Chapters[ 7 ] = Chapter07Init();
-	Chapters[ 8 ] = Chapter08Init();
+	Chapters[  1 ] = Chapter01Init();
+	Chapters[  2 ] = Chapter02Init();
+	Chapters[  3 ] = Chapter03Init();
+	Chapters[  4 ] = Chapter04Init();
+	Chapters[  5 ] = Chapter05Init();
+	Chapters[  6 ] = Chapter06Init();
+	Chapters[  7 ] = Chapter07Init();
+	Chapters[  8 ] = Chapter08Init();
+	Chapters[ 13 ] = Chapter13Init();
 
 	// main loop
 	while ( true )

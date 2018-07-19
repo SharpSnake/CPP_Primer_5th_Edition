@@ -86,7 +86,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>C:\dev\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -168,6 +168,7 @@
     <ClCompile Include="Chapter06.cpp" />
     <ClCompile Include="Chapter07.cpp" />
     <ClCompile Include="Chapter08.cpp" />
+    <ClCompile Include="Chapter13.cpp" />
     <ClCompile Include="ConsoleUtility.cpp" />
     <ClCompile Include="CppPrimer5th.cpp" />
     <ClCompile Include="stdafx.cpp">

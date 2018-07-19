@@ -167,15 +167,40 @@ public:
 	constexpr Coordinate( double lon, double lat ) 
 		: m_Longitude( lon ), m_Latitude( lat ) {}	MCPP11
 
+	Coordinate( const TSPoint &pnt ) = delete;	MCPP11
+
+	Coordinate( const Coordinate &right )
+		: m_Longitude( right.m_Longitude ), m_Latitude( right.m_Latitude ) {}
+
 	constexpr double Longitude() const { return m_Longitude; }
 	constexpr double Latitude() const { return m_Latitude; }
 
 	/* C++14 constexpr */ void SetLongitude( double lon ) { m_Longitude = lon; }
 	/* C++14 constexpr */ void SetLatitude( double lat ) { m_Latitude = lat; }
 
+	Coordinate& operator =( const Coordinate &right )
+	{
+		m_Longitude = right.m_Longitude;
+		m_Latitude = right.m_Latitude;
+		return *this;
+	}
+
+	explicit operator bool() const
+	{
+		return m_Longitude != 0 || m_Latitude != 0;
+	}
+
 	friend ostream & operator <<( ostream &ostm, const Coordinate &obj )
 	{
 		return ostm << "( " << obj.m_Longitude << ", " << obj.m_Latitude << " )";
+	}
+
+	template< unsigned N >
+	friend ostream & operator <<( ostream &ostm, const Coordinate ( &cary )[ N ] )
+	{
+		for( auto &i : cary )
+			ostm << i << endl;
+		return ostm;
 	}
 
 	// 地理坐标向一般点的转换

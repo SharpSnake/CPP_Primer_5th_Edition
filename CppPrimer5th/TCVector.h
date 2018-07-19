@@ -1,6 +1,6 @@
 // =============================================================================
 // 
-// A simple imitation of std::vector.
+// A implementation(imitation) of std::vector.
 // 
 // 						              - WuYu, 2018.06.
 // =============================================================================
@@ -8,112 +8,269 @@
 #define TCVECTOR_H
 
 #include <cstddef>
-#include <cstring>
-#include <stdexcept>		// 标准库定义的一些异常类，基类都是exception
+#include <stdexcept>
 #include <initializer_list>
+#include <memory>		// allocator
+#include <utility>		// std::move, std::swap(since C++11)
+#include <algorithm>	// std::sort
+#include <iostream>
 
 
-template< typename T >
+template< typename T, typename AllocType = std::allocator< T > >
 class TCVector
 {
 public:
-	typedef T* iterator;				// 迭代器类型
-	typedef const T* const_iterator;
+	typedef T*							iterator;				// 迭代器类型
+	typedef const T*					const_iterator;
+	typedef T*							pointer;				// 元素指针类型
+	typedef const T*					const_pointer;
+	typedef const T&					const_reference;
+	typedef std::size_t					size_type;
 
 public:
+	// 默认构造，容量为空，直到初次PushBack时分配8个长度
 	TCVector()
+		: m_First( nullptr ), m_Current( nullptr ), m_End( nullptr ) {}
+
+	// 用于列表初始化
+	TCVector( std::initializer_list< T > list )
+		: TCVector()
 	{
-		m_Pos = 0;
-		m_Capacity = 8;
-		m_Data = new T[ m_Capacity ];
+		_Alloc_Copy( list.begin(), list.end() );
 	}
 
-	TCVector( const TCVector &right )
+	/**
+	*  拷贝构造，与合成默认构造不同，当没有自定义时，编译器【总会合成】拷贝构造
+	*
+	* @param  allocByCapacity  默认按right的size分配内存，否则按Capacity来分配
+	*/ 
+	TCVector( const TCVector &right, bool allocByCapacity = false )
+		: TCVector()
 	{
-		m_Pos = right.m_Pos;
-		m_Capacity = right.m_Capacity;
-		m_Data = new T[ m_Capacity ];
-		std::memcpy( m_Data, right.m_Data, sizeof( T ) * m_Pos );
+		_Alloc_Copy( right.m_First, right.m_Current, 
+			allocByCapacity ? right.m_End : nullptr );
 	}
 
-	~TCVector()
+	// 移动构造，窃取右值的资源，必须保证移后源对象【析构安全】；
+	// 【noexcept】在声明和定义处【都要有】，【紧跟】参数列表；
+	TCVector( TCVector &&right ) noexcept	MCPP11
+		: m_First( right.m_First ), m_Current( right.m_Current ), m_End( right.m_End )
 	{
-		_Destroy();
-		m_Pos = 0;
-		m_Capacity = 0;
+		right.m_First = right.m_Current = right.m_End = nullptr;
 	}
 
-public:
-	void PushBack( const T &val )
+	/**
+	*  拷贝赋值运算符，一般 = 重构造 + 析构，遵守两个原则：
+	*  1、保证【自赋值】可以正常工作；
+	*  2、【先分配】新资源并拷贝右值，然后【再销毁】旧资源，确保自赋值，且分配失败可以【回滚】；
+	*/
+	TCVector& operator =( const TCVector &right )
 	{
-		if( m_Pos == m_Capacity )
-			_ReAlloc();
-		m_Data[ m_Pos++ ] = val;
+		_Alloc_Copy( right.m_First, right.m_Current );
+		return *this;
 	}
 
-	std::size_t Size() const { return m_Pos; }
-
-	void Clear()	// only set data value and position to zero, not destroying.
+	/*
+	// 利用【拷贝交换技术】实现operator =，注意参数不是引用，所以实参是一个拷贝的临时变量，
+	// 可以不用担心自赋值，赋值完后临时变量自动释放
+	TCVector& operator =( TCVector right )
 	{
-		std::memset( m_Data, 0, sizeof( T ) * m_Pos );
-		m_Pos = 0;
+		swap( *this, right );
+		return *this;
 	}
-	
-	T& operator []( std::size_t pos )
+	*/
+
+	// 移动赋值运算符，自移动是没有必要的
+	TCVector& operator =( TCVector &&right ) noexcept	MCPP11
 	{
-		if( pos >= m_Pos )
-			throw std::out_of_range( "TCVector::operator [] : position out of range" );
-		return m_Data[ pos ];
+		if( &right != this )
+		{
+			_Destroy();
+			m_First = right.m_First;
+			m_Current = right.m_Current;
+			m_End = right.m_End;
+			right.m_First = right.m_Current = right.m_End = nullptr;
+		}
+		return *this;
 	}
 
+	// 用于初始化列表赋值
 	TCVector& operator =( std::initializer_list< T > list )
 	{
-		_Destroy();
-
-		m_Pos = 0;
-		m_Capacity = list.size();
-		m_Data = new T[ m_Capacity ];
-		for( auto i = list.begin(); i != list.end(); ++i )
-			m_Data[ m_Pos++ ] = *i;
-
-		return ( *this );
+		_Alloc_Copy( list.begin(), list.end() );
+		return *this;
 	}
 
-// std interface
+	// 析构：在函数体执行完毕后，按类中声明顺序的【逆序】，逐个销毁成员变量
+	~TCVector() { _Destroy(); }
+
 public:
-	iterator begin()	// 若需实现range for，必须严格命名为'begin'和'end'
+	size_type		Size()		const	{ return m_Current - m_First; }
+	size_type		Capacity()	const	{ return m_End - m_First; }
+
+	// 若需实现range for，必须严格命名为"begin"和"end"
+	iterator		begin()				{ return m_First; }
+	const_iterator	begin()		const	{ return m_First; }
+	iterator		end()				{ return m_Current; }
+	const_iterator	end()		const	{ return m_Current; }
+
+	// 引用限定符&：只能被左值调用，返回自身副本的排序
+	// 如果函数是const的，限定符必须【跟在const后面】
+	TCVector Sorted() const &	MCPP11
 	{
-		return m_Data;
+		TCVector retVal( *this );
+		std::sort( retVal.begin(), retVal.end() );
+		return retVal;
 	}
 
-	iterator end()
+	// 引用限定符&&：只能被右值调用，直接对自身排序并返回
+	// 如果一个成员函数有限定符，那么所有同名、同参数的【重载】都必须有引用限定符
+	TCVector Sorted() &&	MCPP11
 	{
-		return m_Data + m_Pos;
+		std::sort( this->begin(), this->end() );
+		return *this;
+	}
+
+	// 向末尾添加一个元素，常规版本
+	void PushBack( const_reference val )
+	{
+		if( m_Current == m_End )
+			_Alloc_Grow();
+		m_Alloc.construct( m_Current++, val );	// 这里将使用T的【拷贝构造】
+	}
+
+	// 右引重载版本，添加一个右引对象，将使用T的移动构造
+	void PushBack( T &&rrval )	MCPP11
+	{
+		if( m_Current == m_End )
+			_Alloc_Grow();
+		m_Alloc.construct( m_Current++, std::move( rrval ) );
+	}
+
+	// 释放末尾的几个元素，默认释放最后一个
+	void PopBack( size_type count = 1 )
+	{
+		if( count < Size() )
+		{
+			for( size_type i = 0; i < count; ++i )
+				m_Alloc.destroy( --m_Current );
+		}
+		else
+			Clear();
+	}
+
+	// 预分配指定长度的内存，已存在的元素会保留
+	void Reserve( size_type newcapacity )
+	{
+		if( newcapacity > Capacity() )
+			_Alloc_Grow( newcapacity );
+	}
+
+	// 重整元素的长度，用指定元素填充末尾可能追加的部分，没有指定就使用默认构造填充
+	void Resize( size_type newsize, const_reference addval = T() )
+	{
+		if( newsize < Size() )
+		{
+			PopBack( Size() - newsize );
+		}
+		else if( newsize > Size() )
+		{
+			Reserve( newsize );
+			m_Current = std::uninitialized_fill_n( m_Current, newsize - Size(), addval );
+		}
+	}
+
+	// 仅清除每个元素，容器资源并不释放
+	void Clear()
+	{
+		if( Size() )
+		{
+			for( auto i = m_First; i != m_Current; ++i )
+				m_Alloc.destroy( i );
+			m_Current = m_First;
+		}
+	}
+
+	// 必须加【friend】修饰，才算是std::swap的【重载】，否则仅仅是一个成员函数
+	// std::swap利用类的【移动】构造和移动赋值提速的，如果类没有实现移动，将没有性能提升；
+	friend void swap( TCVector &left, TCVector &right )
+	{
+		using std::swap;	// 下面的调用都不要加std的作用域限定符
+		swap( left.m_First, right.m_First );
+		swap( left.m_Current, right.m_Current );
+		swap( left.m_End, right.m_End );
+	}
+	
+	T& operator []( size_type pos )
+	{
+		if( pos >= Size() )
+			throw std::out_of_range( "TCVector::operator [] : position out of range" );
+		return *( m_First + pos );
 	}
 
 private:
-	void _ReAlloc()	// double the capacity
+	// 拷贝分配，如果pend不为空，则按照first至pend的长度分配
+	void _Alloc_Copy( const_pointer first, const_pointer last, 
+		const_pointer pend = nullptr )
 	{
-		m_Capacity *= 2;
-		T *tmpData = new T[ m_Capacity ];
-		std::memcpy( tmpData, m_Data, sizeof( T ) * m_Pos );
+		size_type newcap = pend ? pend - first : last - first;
+		pointer newfirst = m_Alloc.allocate( newcap );
+		pointer newCurrent = std::uninitialized_copy( first, last, newfirst );
+
 		_Destroy();
-		m_Data = tmpData;
+		m_First = newfirst;
+		m_Current = newCurrent;
+		m_End = m_First + newcap;
 	}
 
+	// 自增长分配，除非指定要分配的内存长度
+	void _Alloc_Grow( size_type customcap = 0 )
+	{
+		// 初次分配8个长度
+		size_type newcap = customcap ? customcap : ( Capacity() ? Capacity() * 2 : 8 );
+		pointer newfirst = m_Alloc.allocate( newcap );
+		pointer newp = newfirst;
+
+		// 这里也可以使用移动迭代器实现快速拷贝，效果是一样的：
+		//m_Current = std::uninitialized_copy( make_move_iterator( begin() ), 
+		//	make_move_iterator( end() ), newfirst );
+		for( auto i = m_First; i != m_Current; ++i )
+			m_Alloc.construct( newp++, std::move( *i ) ); MCPP11	// 使用移动构造可以提速
+
+		_Destroy();
+		m_First = newfirst;
+		m_Current = newp;
+		m_End = m_First + newcap;
+	}
+
+	// 析构每个元素，并释放容器资源
 	void _Destroy()
 	{
-		if( m_Data )
+		if( m_First )
 		{
-			delete[] m_Data;
-			m_Data = nullptr;
+			for( auto i = m_First; i != m_Current; ++i )
+				m_Alloc.destroy( i );
+
+			m_Alloc.deallocate( m_First, m_End - m_First );
+			m_First = m_Current = m_End = nullptr;
 		}
 	}
 
 private:
-	std::size_t m_Pos;			// current position = current length of data
-	std::size_t m_Capacity;
-	T *m_Data;
+	AllocType m_Alloc;		// 内存分配器
+	pointer m_First;		// 第一个元素的指针
+	pointer m_Current;		// 最后一个有效元素的下一个位置
+	pointer m_End;			// 内存末尾的下一个位置
 };
+
+
+template< typename T, typename AllocType >
+std::ostream& operator <<( std::ostream &o, const TCVector< T, AllocType > &vec )
+{
+	o << "Elements:" << std::endl;
+	for( auto &i : vec )
+		o << "\t" << i << std::endl;
+	return o << "Size:\t\t" << vec.Size() << std::endl << "Capacity:\t" << vec.Capacity();
+}
 
 #endif // !TCVECTOR_H

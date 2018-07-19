@@ -83,6 +83,8 @@ ChapterBase* Chapter06Init();
 ChapterBase* Chapter07Init();
 ChapterBase* Chapter08Init();
 
+ChapterBase* Chapter13Init();
+
 
 // ²âÊÔÖ÷Ñ­»·
 void RunMainLoop();
