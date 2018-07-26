@@ -7,30 +7,28 @@
 #ifndef TCVECTOR_H
 #define TCVECTOR_H
 
-#include <cstddef>
-#include <stdexcept>
 #include <initializer_list>
 #include <memory>		// allocator
 #include <utility>		// std::move, std::swap(since C++11)
 #include <algorithm>	// std::sort
 #include <iostream>
 
+#include "Vector_Base.hpp"
+
 
 template< typename T, typename AllocType = std::allocator< T > >
 class TCVector
+	: public Vector_Container< T >
 {
 public:
 	typedef T*							iterator;				// 迭代器类型
 	typedef const T*					const_iterator;
-	typedef T*							pointer;				// 元素指针类型
-	typedef const T*					const_pointer;
-	typedef const T&					const_reference;
-	typedef std::size_t					size_type;
+	typedef Vector_Iterator< Vector_Container< T > >		_iterator;
+	typedef const Vector_Iterator< Vector_Container< T > >	_const_iterator;
 
-public:
+
 	// 默认构造，容量为空，直到初次PushBack时分配8个长度
-	TCVector()
-		: m_First( nullptr ), m_Current( nullptr ), m_End( nullptr ) {}
+	TCVector() : Vector_Container() {}
 
 	// 用于列表初始化
 	TCVector( std::initializer_list< T > list )
@@ -54,10 +52,7 @@ public:
 	// 移动构造，窃取右值的资源，必须保证移后源对象【析构安全】；
 	// 【noexcept】在声明和定义处【都要有】，【紧跟】参数列表；
 	TCVector( TCVector &&right ) noexcept	MCPP11
-		: m_First( right.m_First ), m_Current( right.m_Current ), m_End( right.m_End )
-	{
-		right.m_First = right.m_Current = right.m_End = nullptr;
-	}
+		: Vector_Container( std::move( right ) ) {}
 
 	/**
 	*  拷贝赋值运算符，一般 = 重构造 + 析构，遵守两个原则：
@@ -102,7 +97,8 @@ public:
 	}
 
 	// 析构：在函数体执行完毕后，按类中声明顺序的【逆序】，逐个销毁成员变量
-	~TCVector() { _Destroy(); }
+	virtual ~TCVector() { _Destroy(); }
+
 
 public:
 	size_type		Size()		const	{ return m_Current - m_First; }
@@ -201,7 +197,15 @@ public:
 		swap( left.m_End, right.m_End );
 	}
 	
-	T& operator []( size_type pos )
+	// 下标运算符必须是成员函数
+	T& operator[]( size_type pos )
+	{
+		if( pos >= Size() )
+			throw std::out_of_range( "TCVector::operator [] : position out of range" );
+		return *( m_First + pos );
+	}
+
+	const_reference operator[]( size_type pos ) const
 	{
 		if( pos >= Size() )
 			throw std::out_of_range( "TCVector::operator [] : position out of range" );
@@ -258,9 +262,6 @@ private:
 
 private:
 	AllocType m_Alloc;		// 内存分配器
-	pointer m_First;		// 第一个元素的指针
-	pointer m_Current;		// 最后一个有效元素的下一个位置
-	pointer m_End;			// 内存末尾的下一个位置
 };
 
 

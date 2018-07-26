@@ -12,16 +12,12 @@
 
 #include "ConsoleUtility.h"
 #include "Functions.hpp"
+#include "Geom.hpp"
 
 
 // 头文件中最好不要用using声明，当此头文件被包含到其他cpp时，
 // 可能会引发意想不到的名字冲突，所以最好由cpp自己决定使用哪些using声明
 using namespace std;
-
-
-class QuadraticPoly;
-class TCPerson;
-class Coordinate;
 
 
 // 编程语言
@@ -35,48 +31,6 @@ enum ProgramLan
 	Lan_All			= Lan_CPP | Lan_CSharp | Lan_Java | Lan_Matlab | Lan_Python
 };
 
-
-// 测试用结构体：二维点，是聚合类
-struct TSPoint
-{
-	double x;
-	double y;
-
-	friend ostream & operator <<( ostream &ostm, const TSPoint &obj )
-	{
-		return ostm << "x：" << obj.x << "， y：" << obj.y;
-
-		// 若采用下面的实现，打印会自动换一换，但一般自定义类型不要主动换行好一些
-		// return endl( ostm << "x：" << obj.x << "， y：" << obj.y );
-	}
-};
-
-
-// 测试用类：二维点，是聚合类（Aggregate Class）
-class TCPoint
-{
-public:
-	double x;
-	double y;
-
-	// 平移
-	void Offset( double xoff, double yoff )
-	{
-		x += xoff;
-		y += yoff;
-	}
-
-	// 求和
-	TCPoint operator +( const TCPoint &pnt ) const
-	{
-		return { this->x + pnt.x, this->y + pnt.y };
-	}
-
-	friend ostream & operator <<( ostream &ostm, const TCPoint &obj )
-	{
-		return ostm << "x：" << obj.x << "， y：" << obj.y;
-	}
-};
 
 // 测试用类：二次多项式ax^2 + bx + c
 class QuadraticPoly
@@ -158,71 +112,6 @@ public:
 };
 
 
-// 地理坐标点
-class Coordinate
-{
-public:
-	Coordinate() = default;
-
-	constexpr Coordinate( double lon, double lat ) 
-		: m_Longitude( lon ), m_Latitude( lat ) {}	MCPP11
-
-	Coordinate( const TSPoint &pnt ) = delete;	MCPP11
-
-	Coordinate( const Coordinate &right )
-		: m_Longitude( right.m_Longitude ), m_Latitude( right.m_Latitude ) {}
-
-	constexpr double Longitude() const { return m_Longitude; }
-	constexpr double Latitude() const { return m_Latitude; }
-
-	/* C++14 constexpr */ void SetLongitude( double lon ) { m_Longitude = lon; }
-	/* C++14 constexpr */ void SetLatitude( double lat ) { m_Latitude = lat; }
-
-	Coordinate& operator =( const Coordinate &right )
-	{
-		m_Longitude = right.m_Longitude;
-		m_Latitude = right.m_Latitude;
-		return *this;
-	}
-
-	explicit operator bool() const
-	{
-		return m_Longitude != 0 || m_Latitude != 0;
-	}
-
-	friend ostream & operator <<( ostream &ostm, const Coordinate &obj )
-	{
-		return ostm << "( " << obj.m_Longitude << ", " << obj.m_Latitude << " )";
-	}
-
-	template< unsigned N >
-	friend ostream & operator <<( ostream &ostm, const Coordinate ( &cary )[ N ] )
-	{
-		for( auto &i : cary )
-			ostm << i << endl;
-		return ostm;
-	}
-
-	// 地理坐标向一般点的转换
-	operator TCPoint()
-	{
-		return { m_Longitude, m_Latitude };
-	}
-
-private:
-	// 经纬度
-	double m_Longitude;
-	double m_Latitude;
-};
-
-// 计算两点的中点坐标
-constexpr Coordinate MidPoint( const Coordinate &coord1, const Coordinate &coord2 )	MCPP11
-{
-	return { ( coord1.Longitude() + coord2.Longitude() ) / 2,
-		( coord1.Latitude() + coord2.Latitude() ) / 2 };
-}
-
-
 // 字面值类型示例：地标
 class Placemark		MCPP11
 {
@@ -256,6 +145,37 @@ private:
 	Coordinate m_Coord{ 121, 36 };	// 类类型类内初始值只能用【列表初始化】
 	ushort m_Height = Factorial( 5 );
 	const char *m_Title = "天安门";
+};
+
+
+// 函数对象：求绝对值
+template< typename T >
+struct Op_Abs
+{
+	T operator()( const T &val ) const
+	{
+		return val > 0 ? val : -val;
+	}
+
+	void operator()( T &val ) const
+	{
+		if( val < 0 )
+			val = -val;
+	}
+};
+
+
+// 函数对象：与常数相乘
+template< typename T >
+struct Op_Times_N
+{
+	Op_Times_N( T n ) : m_N( n ) {}
+	
+	T operator()( const T &val ) const { return val * m_N; }
+	void operator()( T &val ) const { val *= m_N; }
+
+private:
+	T m_N;
 };
 
 

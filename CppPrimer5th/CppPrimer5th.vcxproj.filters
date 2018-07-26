@@ -48,6 +48,12 @@
     <ClInclude Include="BinaryStream.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Geom.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector_Base.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -87,6 +93,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Chapter13.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Chapter14.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Chapter15.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

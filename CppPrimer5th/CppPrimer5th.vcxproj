@@ -86,7 +86,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_WARNINGS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>C:\dev\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -154,10 +154,12 @@
     <ClInclude Include="Chapter07.h" />
     <ClInclude Include="ConsoleUtility.h" />
     <ClInclude Include="Functions.hpp" />
+    <ClInclude Include="Geom.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TCVector.h" />
     <ClInclude Include="TestBase.h" />
     <ClInclude Include="TestHelper.h" />
+    <ClInclude Include="Vector_Base.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chapter01.cpp" />
@@ -169,6 +171,8 @@
     <ClCompile Include="Chapter07.cpp" />
     <ClCompile Include="Chapter08.cpp" />
     <ClCompile Include="Chapter13.cpp" />
+    <ClCompile Include="Chapter14.cpp" />
+    <ClCompile Include="Chapter15.cpp" />
     <ClCompile Include="ConsoleUtility.cpp" />
     <ClCompile Include="CppPrimer5th.cpp" />
     <ClCompile Include="stdafx.cpp">
