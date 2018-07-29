@@ -113,13 +113,18 @@ void Test_NewFunction()
 {
 	StartOneTest( "绑定函数对象" );
 	using namespace std::placeholders;		MCPP11
-	// bind产生的结果其实也是函数对象，可以绑定函数、lambda、函数对象等等
+
+	// bind产生的结果其实也是函数对象，可以绑定（成员）函数、lambda、函数对象等等
 	auto bfunc = bind( Randi, _1, 100 );
+	TCPoint pnt = { 5, 5 };
+	auto bmemfunc = bind( &TCPoint::Offset, &pnt, _1, _2 );
 	auto blambda = bind( []( double d1, double d2 ){ return d1 / d2; }, 
 		_2, _1 );	// bind可以改变最终输入参数的顺序和个数
 	auto bfunobj = bind( plus< double >(), _1, _2 );
 
 	cout << "bind Randi:\t" << bfunc( 50 ) << endl;
+	bmemfunc( 1.5, 2 );
+	cout << "bind member function:\t" << pnt << endl;
 	cout << "bind lambda:\t" << blambda( 3, 10 ) << endl;	// 10 / 3
 	cout << "bind func obj:\t" << bfunobj( 10, 5 ) << endl;
 

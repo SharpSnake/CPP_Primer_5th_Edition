@@ -97,7 +97,7 @@ inline int InputCodeByMap( const string &msg, const map< int, T > &m )
 
 	cout << msg << ":" << endl; 
 	for ( const auto &i : m )
-		cout << i.first << " : " << i.second << "." << endl;
+		cout << i.first << " :\t" << i.second << "." << endl;
 	cout << CONSOLE_CODE_EXIT << " : Exit." << endl;
 
 	int code{};

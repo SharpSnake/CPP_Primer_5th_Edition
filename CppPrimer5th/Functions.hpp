@@ -1,6 +1,7 @@
 #ifndef FUNCTIONS_HPP
 #define FUNCTIONS_HPP
 
+#include <stdlib.h>     // malloc, free
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -13,6 +14,45 @@
 	cout << "Type of \"" << #var << "\"\t:\t";\
 	cout << boost::typeindex::type_id_with_cvr< decltype( var ) >().pretty_name() << endl;\
 }
+
+// 安全彻底地释放一个动态对象
+#define SafeDelete( p )\
+{\
+	if( p )\
+	{\
+		delete p;\
+		p = nullptr;\
+	}\
+}
+
+
+// 释c动态内存的函数和函数对象
+inline void FreeCMemory( void *cmem )
+{
+	std::cout << "\tFunction free" << std::endl;
+	free( cmem );
+}
+
+struct Op_FreeCMemory
+{
+	void operator()( void *cmem ) const
+	{
+		std::cout << "\tOp_FreeCMemory free" << std::endl;
+		free( cmem );
+	}
+};
+
+template< typename T >
+struct Op_DeleteArray
+{
+	void operator()( T *ary ) const
+	{
+		std::cout << "\tOp_DeleteArray delete array" << std::endl;
+		delete[] ary;
+	}
+};
+
+
 
 //template< typename T >
 //constexpr void constexpr_checker( T&& t ) {}
