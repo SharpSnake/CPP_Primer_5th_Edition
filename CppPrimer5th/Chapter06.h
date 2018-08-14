@@ -24,27 +24,6 @@ void PrintSchoolInfo( const std::string &name,
 	size_t number = Randi( 500, 1000 ), const TCPoint &pos = SchoolPosition );
 
 
-// 通过模板，可以接受任意维度的数组参数
-template< typename T, unsigned N >
-void PrintArray1D( T ( &ary )[ N ] )
-{
-	for( auto &i : ary )
-		std::cout << i << " ";
-	std::cout << std::endl;
-}
-
-template< typename T, unsigned M, unsigned N >
-void PrintArray2D( T ( &ary )[ M ][ N ] )
-{
-	for( auto &i : ary )
-	{
-		for( auto &j : i )
-			std::cout << j << " ";
-		std::cout << std::endl;
-	}
-}
-
-
 void PrintNames( std::initializer_list< std::string > );
 void PrintNames( int,... );	// 逗号是可省的
 

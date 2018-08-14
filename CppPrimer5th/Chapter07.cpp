@@ -60,7 +60,7 @@ void Test_Constructor()
 
 	StartOneTest( "构造函数与隐式类型转换" );
 	Student s4, s5, s6;
-	TCPerson p1( "小强", 14 ), p2( "小亮", 13 );
+	TCPerson p1( 14, "小强" ), p2( 13, "小亮" );
 
 	s4 = static_cast< Student >( string( "韩梅梅" ) );
 	s5 = p1;

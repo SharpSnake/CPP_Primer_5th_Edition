@@ -3,6 +3,7 @@
 
 #include "TestBase.h"
 #include "TestHelper.h"
+#include "Inheritance.hpp"
 
 void Test_CinAndCout()
 {

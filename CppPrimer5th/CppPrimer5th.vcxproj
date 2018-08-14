@@ -155,6 +155,7 @@
     <ClInclude Include="ConsoleUtility.h" />
     <ClInclude Include="Functions.hpp" />
     <ClInclude Include="Geom.hpp" />
+    <ClInclude Include="Inheritance.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TCVector.h" />
     <ClInclude Include="TestBase.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="Chapter13.cpp" />
     <ClCompile Include="Chapter14.cpp" />
     <ClCompile Include="Chapter15.cpp" />
+    <ClCompile Include="Chapter16.cpp" />
     <ClCompile Include="ConsoleUtility.cpp" />
     <ClCompile Include="CppPrimer5th.cpp" />
     <ClCompile Include="stdafx.cpp">

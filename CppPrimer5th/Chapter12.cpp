@@ -8,6 +8,7 @@
 
 #include "TestBase.h"
 #include "TestHelper.h"
+#include "Inheritance.hpp"
 
 using namespace std;
 
@@ -159,10 +160,10 @@ void Test_shared_ptr()
 	StartOneTest( "shared_ptr的伴随指针——weak_ptr" );
 	// weak_ptr仅接受一个shared_ptr来进行构造或赋值，它本身支持拷贝和赋值
 	// 但无论构造还是自身拷贝赋值，都不会改变和它伴随的shared_ptr的引用计数
-	shared_ptr< TCPerson > spPer = make_shared< TCPerson >( "Tom", 26 );
+	shared_ptr< TCPerson > spPer = make_shared< TCPerson >( 26, "Tom" );
 	weak_ptr< TCPerson > wpPer1 = spPer;
 
-	spPer.reset( new TCPerson( "Jack", 30 ) );
+	spPer.reset( new TCPerson( 30, "Jack" ) );
 	weak_ptr< TCPerson > wpPer2 = spPer;
 
 	// 它有核查与它最初伴随指针是否过期的作用，重置为Jack后，Tom就没了，所以已经过期

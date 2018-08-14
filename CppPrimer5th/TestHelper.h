@@ -20,14 +20,14 @@
 using namespace std;
 
 
-// 编程语言
-enum ProgramLan
+// C++11枚举：编程语言
+enum class ProgramLan : unsigned		MCPP11
 {
 	Lan_CPP			= 0x001,
 	Lan_CSharp		= 0x002,
 	Lan_Java		= 0x004,
 	Lan_Matlab		= 0x008,
-	Lan_Python		= 0x010,
+	Lan_Python		= Lan_Matlab << 1,
 	Lan_All			= Lan_CPP | Lan_CSharp | Lan_Java | Lan_Matlab | Lan_Python
 };
 
@@ -50,65 +50,6 @@ public:
 		return ostm << obj.m_Coef[ 0 ] << " * x^2 + " << obj.m_Coef[ 1 ] 
 			<< " * x + " << obj.m_Coef[ 2 ];
 	}
-};
-
-
-// 测试用类：人
-class TCPerson
-{
-protected:
-	string m_name = "穆阿迪布";	MCPP11	// 类内初始值
-	unsigned int m_age = 4000;
-
-public:
-	TCPerson() = default;
-	TCPerson( const string &name, unsigned age )
-		: m_name( name ), m_age( age ) {}
-
-	virtual ~TCPerson() {}
-
-public:
-	string Name() const { return m_name; }
-	unsigned Age() const { return m_age; }
-
-	friend istream & operator >>( istream &istm, TCPerson &obj )
-	{
-		return istm >> obj.m_name >> obj.m_age;
-	}
-
-	friend ostream & operator <<( ostream &ostm, const TCPerson &obj )
-	{
-		return ostm << "姓名：" << obj.m_name << "， 年龄：" << obj.m_age;
-	}
-};
-
-
-// 测试用类：男人
-class TCMan : public TCPerson
-{
-protected:
-	// 胡须长度，单位cm
-	double m_BeardLength = 10;
-
-public:
-	TCMan() {}
-	~TCMan() {}
-
-	double BeardLength() const { return m_BeardLength; }
-};
-
-
-// 测试用类：女人
-class TCWomen : public TCPerson
-{
-protected:
-	// 手提包品牌
-	string m_HandbagBrand = "LV";
-public:
-	TCWomen() {}
-	~TCWomen() {}
-
-	string HandbagBrand() const { return m_HandbagBrand; }
 };
 
 
@@ -176,6 +117,22 @@ struct Op_Times_N
 
 private:
 	T m_N;
+};
+
+// 模仿标注库去引用的模板，利用偏特化实现
+template< typename T >
+struct RemoveRef	{
+	typedef T type;
+};
+
+template< typename T >
+struct RemoveRef< T& >	{	// 针对左值特化
+	typedef T type;
+};
+
+template< typename T >
+struct RemoveRef< T&& >	{	// 针对右值特化
+	typedef T type;
 };
 
 

@@ -42,6 +42,7 @@ void RunMainLoop()
 	Chapters[ 13 ] = Chapter13Init();
 	Chapters[ 14 ] = Chapter14Init();
 	Chapters[ 15 ] = Chapter15Init();
+	Chapters[ 16 ] = Chapter16Init();
 
 	// main loop
 	while ( true )

@@ -143,6 +143,15 @@ public:
 		m_Alloc.construct( m_Current++, std::move( rrval ) );
 	}
 
+	// 向末尾添加一个元素，手动构造
+	template< typename... Args >
+	void EmplaceBack( Args&&... args )
+	{
+		if( m_Current == m_End )
+			_Alloc_Grow();
+		m_Alloc.construct( m_Current++, std::forward< Args >( args )... );
+	}
+
 	// 释放末尾的几个元素，默认释放最后一个
 	void PopBack( size_type count = 1 )
 	{
@@ -175,6 +184,9 @@ public:
 			m_Current = std::uninitialized_fill_n( m_Current, newsize - Size(), addval );
 		}
 	}
+
+	// 收缩资源空间
+	void ShrinkToFit();
 
 	// 仅清除每个元素，容器资源并不释放
 	void Clear()
@@ -264,6 +276,18 @@ private:
 	AllocType m_Alloc;		// 内存分配器
 };
 
+// 类外定义要有模参列表
+template< typename T, typename AllocType >
+inline void TCVector< T, AllocType >::ShrinkToFit()
+{
+	if( this->Capacity() > this->Size() )
+	{
+		if( Size() == 0 )
+			_Destroy();
+		else
+			_Alloc_Grow( Size() );
+	}
+}
 
 template< typename T, typename AllocType >
 std::ostream& operator <<( std::ostream &o, const TCVector< T, AllocType > &vec )
@@ -273,5 +297,8 @@ std::ostream& operator <<( std::ostream &o, const TCVector< T, AllocType > &vec 
 		o << "\t" << i << std::endl;
 	return o << "Size:\t\t" << vec.Size() << std::endl << "Capacity:\t" << vec.Capacity();
 }
+
+// C++11类模板显式实例化之声明
+extern template class TCVector< unsigned >;
 
 #endif // !TCVECTOR_H

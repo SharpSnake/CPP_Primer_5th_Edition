@@ -7,6 +7,7 @@
 #include <stdexcept>
 
 #include "TestHelper.h"
+#include "Inheritance.hpp"
 
 
 class Student;	// 类的【前向声明】
