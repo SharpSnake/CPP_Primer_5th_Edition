@@ -21,7 +21,7 @@ public:
 		: m_First( nullptr ), m_Current( nullptr ), m_End( nullptr ) {}
 
 	// “∆∂Øππ‘Ï
-	Vector_Container( Vector_Container &&right )
+	Vector_Container( Vector_Container &&right )	noexcept
 		: m_First( right.m_First ), m_Current( right.m_Current ), m_End( right.m_End )
 	{
 		right.m_First = right.m_Current = right.m_End = nullptr;

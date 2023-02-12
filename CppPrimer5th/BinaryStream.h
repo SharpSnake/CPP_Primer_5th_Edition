@@ -54,7 +54,7 @@ private:
 	// 缓冲区用于存放数据，一般通过继承std::streambuf单独实现一个类，这里简单用vector代替；
 	// 一般要有一个二级缓存，等到二级里面满了或调用flush再存到BinBuf里，避免频繁的插入数据；
 	std::vector< char > m_BinBuf;
-	std::size_t m_Pos;	// 记录当前缓冲区的位置，仅input时用
+	std::size_t m_Pos{};	// 记录当前缓冲区的位置，仅input时用
 };
 
 

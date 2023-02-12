@@ -7,6 +7,11 @@
 #include "TestHelper.h"
 #include "Chapter02.h"
 
+#pragma warning( disable:4101 )
+#pragma warning( disable:4244 )
+#pragma warning( disable:4305 )
+#pragma warning( disable:4309 )
+
 using UI = unsigned int;	MCPP11	// 别名声明
 
 int _VOutOfFunction;   // 函数体外的变量，书上说函数外变量

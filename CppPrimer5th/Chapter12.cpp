@@ -18,7 +18,8 @@ void Test_DynamicMemory()
 	{
 		CONSOLE_COLOR_AUTO_RESET;
 		SetConsoleTextColor( CmdColor_Yellow );
-		cout << "全局变量存在静态内存中，局部变量存在栈（stack）中，\r\n"
+		cout << "全局变量存在静态内存中，编译期已决定分配大小；\r\n"
+			"局部变量存在栈（stack）中；\r\n"
 			"每个应用程序都有一个自己的内存池——堆（heap），用于存放动态对象（内存）。" << endl;
 	}
 

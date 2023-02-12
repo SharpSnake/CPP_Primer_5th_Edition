@@ -8,6 +8,8 @@
 #include "TestHelper.h"
 #include "Inheritance.hpp"
 
+#pragma warning( disable:4244 )
+
 
 void Test_ExpressionBase()
 {

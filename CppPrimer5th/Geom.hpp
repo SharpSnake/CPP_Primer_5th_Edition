@@ -101,7 +101,7 @@ struct TSPoint
 // 地理坐标点
 class Coordinate
 {
-	friend class hash< Coordinate >;
+	friend struct hash< Coordinate >;
 
 public:
 	Coordinate() = default;

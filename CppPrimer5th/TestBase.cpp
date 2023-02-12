@@ -38,6 +38,7 @@ void RunMainLoop()
 	Chapters[  6 ] = Chapter06Init();
 	Chapters[  7 ] = Chapter07Init();
 	Chapters[  8 ] = Chapter08Init();
+	Chapters[  9 ] = Chapter09Init();
 	Chapters[ 12 ] = Chapter12Init();
 	Chapters[ 13 ] = Chapter13Init();
 	Chapters[ 14 ] = Chapter14Init();

@@ -11,7 +11,9 @@ CppPrimer5th.VC.VC.opendb
 Debug/CppPrimer5th.exe
 *.obj
 *.log
-.vs/CppPrimer5th/v14/.suo
 CppPrimer5th/BinaryIOTest.dat
 CppPrimer5th/截断与追加.txt
 CppPrimer5th/testunitbuf.txt
+/.vs/CppPrimer5th
+/CppPrimer5th/x64
+/x64

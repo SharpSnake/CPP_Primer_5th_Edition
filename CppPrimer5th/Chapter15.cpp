@@ -186,7 +186,7 @@ void Test_VirtualFunctionTable()
 	// 由于成员函数隐式的this参数不方便测试，这里构造一个简单的继承链，不涉及成员变量
 	struct IBase{
 		virtual ~IBase() {}
-		virtual void Talk() = 0;
+		virtual void Talk( const string &words ) = 0;
 	};
 	struct Base1{
 		virtual ~Base1()	{}
@@ -196,7 +196,7 @@ void Test_VirtualFunctionTable()
 	struct Derived1 : public Base1, public IBase{
 		virtual ~Derived1()		{}
 		void Fun1() override	{ cout << "Derived1::Fun1" << endl; }
-		void Talk() override	{ cout << "Derived1::Talk" << endl; };
+		void Talk( const string &words ) override	{ cout << "Derived1::Talk: " << words << endl; };
 
 		// 第一张表包括Base1和自身的虚函数
 		virtual void DerFun()	{ cout << "Derived1::DerFun" << endl; };
@@ -210,23 +210,24 @@ void Test_VirtualFunctionTable()
 
 	// 将derObj的地址按int**解析，再依次转为独立的函数指针
 	typedef void ( *PV_Func )();
-	int **pVfunMap = ( int** )( &derObj );
+	using PV_Func_Arg1 = void( * )( void*, const string & );
+	auto pVfunMap = ( intptr_t** )( &derObj );
 
 	// 虚析构一般都是每张表的第一个，所以虚成员函数索引从1开始
 	// Base1::vftable
-	PV_Func der_Fun1 = ( PV_Func )pVfunMap[ 0 ][ 1 ];
-	PV_Func der_Fun2 = ( PV_Func )pVfunMap[ 0 ][ 2 ];
+	auto der_Fun1 = ( PV_Func )pVfunMap[ 0 ][ 1 ];
+	auto der_Fun2 = ( PV_Func )pVfunMap[ 0 ][ 2 ];
 
 	// Derived1::vftable，第一张表也用作自己本身的vftable，它自己的虚函数排在基类的后面
-	PV_Func der_DerFun = ( PV_Func )pVfunMap[ 0 ][ 3 ];
+	auto der_DerFun = ( PV_Func )pVfunMap[ 0 ][ 3 ];
 
 	// IBase::vftable
-	PV_Func der_Talk = ( PV_Func )pVfunMap[ 1 ][ 1 ];
+	auto der_Talk = ( PV_Func_Arg1 )pVfunMap[ 1 ][ 1 ];
 
 	der_Fun1();
 	der_Fun2();
 	der_DerFun();
-	der_Talk();
+	der_Talk( nullptr, "Hi there!" );	// 成员函数实际上隐含第一个参数是this
 }
 
 ChapterBase* Chapter15Init()

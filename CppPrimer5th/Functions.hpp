@@ -244,7 +244,7 @@ inline void ErrorMsg( const Args&... args )
 inline void FunctionsInit()
 {
 	// 初始化随机数发生器
-	std::srand( std::time( nullptr ) );
+	std::srand( ( unsigned )std::time( nullptr ) );
 }
 
 // C++11函数模板显式实例化之声明

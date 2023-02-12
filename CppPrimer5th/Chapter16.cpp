@@ -10,6 +10,10 @@
 #include "TCVector.h"
 #include "Inheritance.hpp"
 
+#pragma warning( disable:4101 )
+#pragma warning( disable:4244 )
+#pragma warning( disable:26800 )
+
 using namespace std;
 
 

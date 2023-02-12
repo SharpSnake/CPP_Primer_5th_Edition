@@ -115,8 +115,8 @@ class _HouseInfo
 {
 public:
 	string Name;
-	double Area;
-	int Altitude;
+	double Area{};
+	int Altitude{};
 
 	friend ostream& operator <<( ostream &os, const _HouseInfo &obj )
 	{

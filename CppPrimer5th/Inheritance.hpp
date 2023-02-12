@@ -25,6 +25,8 @@ inline std::ostream & operator <<( std::ostream &ostm, const SpeciesClass &obj )
 		return ostm << "Ape";
 	case Bird:
 		return ostm << "Bird";
+	default:
+		return ostm << "Unknown species";
 	}
 }
 
@@ -60,7 +62,7 @@ public:
 	virtual SpeciesClass Species() const = 0;
 
 protected:
-	unsigned m_Age;				// ÄêÁä
+	unsigned m_Age{};				// ÄêÁä
 	std::string m_Name;			// Ãû³Æ
 };
 

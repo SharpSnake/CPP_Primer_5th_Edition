@@ -6,6 +6,9 @@
 #include "TestBase.h"
 #include "Chapter06.h"
 
+#pragma warning( disable:4244 )
+#pragma warning( disable:4305 )
+
 using namespace std;
 
 bool Worker1Run = true;
