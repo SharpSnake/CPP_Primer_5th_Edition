@@ -1,13 +1,14 @@
-# ¡¶C++ Primer¡·£¨µÚÎå°æ£©
-## Ò»Ğ©ÕÂ½ÚµÄ²âÊÔÓÃÀıºÍÏà¹Ø×ÊÁÏ¡£
-## Some test cases of "C++ Primer (5th Edition)", and relative resources.
+# ã€ŠC++ Primerã€‹ï¼ˆç¬¬äº”ç‰ˆï¼‰
+[![Build status](https://ci.appveyor.com/api/projects/status/8nvy30s5uy9p9d3i?svg=true)](https://ci.appveyor.com/project/SharpSnake/cpp-primer-5th-edition)
 
 
-±¾ÏîÄ¿ÓÃµ½ÁËboost£¬ËùÒÔĞèÒª°²×°boost£¬²¢°üº¬boostµÄ¸ùÄ¿Â¼¡£
+#### ä¸€äº›ç« èŠ‚çš„æµ‹è¯•ç”¨ä¾‹å’Œç›¸å…³èµ„æ–™ã€‚
+#### Some test cases of "C++ Primer (5th Edition)", and relative resources.
 
 
-My Sina microblog: @ÉßÓêÏÉMeteora
+æœ¬é¡¹ç›®ç”¨åˆ°äº†boostï¼Œæ‰€ä»¥éœ€è¦å®‰è£…boostï¼Œå¹¶åŒ…å«boostçš„æ ¹ç›®å½•ã€‚
 
-My Sina blot:[ÉßÓêÏÉMeteoraµÄ²©¿Í](http://blog.sina.com.cn/meteorafever)
+
+My Sina blot:[è›‡é›¨ä»™Meteoraçš„åšå®¢](http://blog.sina.com.cn/meteorafever)
 
 My E-mail:losengarden@aliyun.com
