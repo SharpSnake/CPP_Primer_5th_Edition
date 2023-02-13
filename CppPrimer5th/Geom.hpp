@@ -111,7 +111,7 @@ public:
 
 	Coordinate( const TSPoint &pnt ) = delete;	MCPP11
 
-	Coordinate( const Coordinate &right )
+	constexpr Coordinate( const Coordinate &right )
 		: m_Longitude( right.m_Longitude ), m_Latitude( right.m_Latitude ) {}
 
 	constexpr double Longitude() const { return m_Longitude; }
