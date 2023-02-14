@@ -1,5 +1,5 @@
 set wshell=createobject("wscript.shell")
-wshell.run "C:\projects\cpp-primer-5th-edition\Debug\CppPrimer5th.exe",1
+wshell.run "C:\projects\cpp-primer-5th-edition\x64\Debug\CppPrimer5th.exe",1
 wscript.sleep 1000
 wshell.sendkeys "2"
 wshell.sendkeys "{ENTER}"
