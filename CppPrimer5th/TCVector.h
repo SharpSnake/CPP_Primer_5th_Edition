@@ -20,6 +20,17 @@ template< typename T, typename AllocType = std::allocator< T > >
 class TCVector
 	: public Vector_Container< T >
 {
+	using my_base = Vector_Container< T >;
+	using my_base::m_First;
+	using my_base::m_Current;
+	using my_base::m_End;
+
+public:
+	using my_base::pointer;
+	using my_base::const_pointer;
+	using my_base::const_reference;
+	using my_base::size_type;
+
 public:
 	typedef T*							iterator;				// µü´úÆ÷ÀàĞÍ
 	typedef const T*					const_iterator;

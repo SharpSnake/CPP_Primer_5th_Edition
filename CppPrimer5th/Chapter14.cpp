@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include <limits>	// numeric_limits
 #include <functional>	// function objects, bind, function< T >
 #include <algorithm>

@@ -9,7 +9,6 @@
 
 #ifdef WIN32
 #	include <Windows.h>
-extern HANDLE HConsoleWindow;	// 控制台窗口句柄
 #endif
 
 #include <iostream>
@@ -17,6 +16,14 @@ extern HANDLE HConsoleWindow;	// 控制台窗口句柄
 #include <string>
 
 using namespace std;
+
+
+namespace
+{
+#ifdef WIN32
+	inline HANDLE HConsoleWindow;	// 控制台窗口句柄
+#endif
+}
 
 
 // 声明某段代码需要自动重置控制台文字颜色

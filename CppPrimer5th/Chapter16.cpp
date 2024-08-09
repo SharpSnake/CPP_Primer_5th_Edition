@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include <vector>
 #include <type_traits>
 #include <utility>	// std::forward

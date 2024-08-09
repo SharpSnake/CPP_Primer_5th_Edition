@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include <stdlib.h>     // malloc, free
 #include <memory>
 #include <functional>

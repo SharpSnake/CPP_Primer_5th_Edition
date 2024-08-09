@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include <vector>
 #include <bitset>	// 借助这个容器测试位运算
 #include <cstring>	// memcpy

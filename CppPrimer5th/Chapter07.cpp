@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include "Chapter07.h"
 #include "TestBase.h"
 

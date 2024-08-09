@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include "TestBase.h"
 #include "ConsoleUtility.h"
 

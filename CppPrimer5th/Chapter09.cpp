@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include <vector>
 #include <algorithm>
 #include <set>

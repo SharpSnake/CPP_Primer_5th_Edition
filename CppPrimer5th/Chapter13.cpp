@@ -1,5 +1,3 @@
-#include "stdafx.h"
-
 #include <utility>	// std::move
 #include <iterator>	// make_move_iterator
 #include <algorithm>	// std::copy
