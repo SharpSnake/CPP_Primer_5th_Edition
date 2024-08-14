@@ -9,6 +9,6 @@
 本项目用到了boost，所以需要安装boost，并包含boost的根目录。
 
 
-My Sina blot: [蛇雨仙Meteora的博客](http://blog.sina.com.cn/meteorafever)
+My Sina blot:[蛇雨仙Meteora的博客](http://blog.sina.com.cn/meteorafever)
 
 My E-mail: losengarden@aliyun.com
