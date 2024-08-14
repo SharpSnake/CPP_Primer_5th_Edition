@@ -1,0 +1,22 @@
+version: 1.0.{build}
+
+skip_commits:
+  files:
+  	- 'README.md'
+  	- '.gitignore'
+    - '.github/*'
+    
+image: Visual Studio 2022
+configuration: Debug
+platform: x64
+
+environment:
+  BOOST_ROOT: C:\Libraries\boost_1_85_0
+  BOOST_LIB: C:\Libraries\boost_1_85_0\lib64-msvc-14.3
+  
+build:
+  parallel: true
+  verbosity: minimal
+  
+after_build:
+- cmd: C:\projects\testdelegate\x64\Debug\Delegate.exe
