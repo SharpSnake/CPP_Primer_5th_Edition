@@ -53,7 +53,5 @@ jobs:
 
     - name: Run tests
       shell: cmd
-      run: |
-          chcp 65001
-          .\x64\Debug\CppPrimer5th.exe 3 4
+      run: .\x64\Debug\CppPrimer5th.exe 3 4
     
