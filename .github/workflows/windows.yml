@@ -54,6 +54,6 @@ jobs:
     - name: Run tests
       shell: cmd
       run: |
-          chcp 65001 #解决中文显示乱码
+          chcp 65001
           .\x64\Debug\CppPrimer5th.exe 3 4
     
