@@ -19,4 +19,4 @@ build:
   verbosity: minimal
   
 after_build:
-- cmd: C:\projects\testdelegate\x64\Debug\Delegate.exe
+- cmd: C:\projects\cpp-primer-5th-edition\AutoTest.vbs
