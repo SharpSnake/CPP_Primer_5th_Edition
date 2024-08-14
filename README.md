@@ -1,5 +1,6 @@
 # 《C++ Primer》（第五版）
 [![Build status](https://ci.appveyor.com/api/projects/status/ptrwvpckcw3qli4x?svg=true)](https://ci.appveyor.com/project/SharpSnake/cpp-primer-5th-edition)
+[![Windows](https://github.com/SharpSnake/CPP_Primer_5th_Edition/actions/workflows/windows.yml/badge.svg)](https://github.com/SharpSnake/CPP_Primer_5th_Edition/actions/workflows/windows.yml)
 
 
 #### 一些章节的测试用例和相关资料。
