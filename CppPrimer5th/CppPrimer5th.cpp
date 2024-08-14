@@ -8,7 +8,11 @@
 int main( int argc, char **argv )
 {
 	HelperInit();
-	RunMainLoop();
+
+	if( argc == 3 )
+		RunMainLoop( stoi( argv[ 1 ] ), stoi( argv[ 2 ] ) );
+	else
+		RunMainLoop();
 	return 0;	// 返回0表示没问题，其他不同的代号表示不同的问题
 }
 

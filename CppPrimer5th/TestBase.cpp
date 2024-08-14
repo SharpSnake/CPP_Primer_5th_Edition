@@ -10,22 +10,26 @@ void ChapterBase::AddSection( const int &code, const std::string &title, Section
 }
 
 // 由用户选择小节序号，循环测试，直到选择退出为止
-void ChapterBase::RunLoop()
+void ChapterBase::RunLoop( int sec )
 {
-	int code{};
-	while ( ( code = InputCodeByMap< SectionTest >( "选择测试用例代号", m_TestCases ) ) 
-		!= CONSOLE_CODE_EXIT )
+	if( !sec )
 	{
-		m_TestCases[ code ].Invoke();
-		if( !InputYesOrNo( "是否继续本章测试？" ) )
-			break;
+		while ( ( sec = InputCodeByMap< SectionTest >( "选择测试用例代号", m_TestCases ) ) 
+			!= CONSOLE_CODE_EXIT )
+		{
+			m_TestCases[ sec ].Invoke();
+			if( !InputYesOrNo( "是否继续本章测试？" ) )
+				break;
+		}
 	}
+	else
+		m_TestCases[ sec ].Invoke();	
 }
 
 
 map< int, ChapterBase* > Chapters{};
 
-void RunMainLoop()
+void RunMainLoop( int code, int sec )
 {
 	// some initialize stuff
 	Chapters[  1 ] = Chapter01Init();
@@ -43,18 +47,23 @@ void RunMainLoop()
 	Chapters[ 15 ] = Chapter15Init();
 	Chapters[ 16 ] = Chapter16Init();
 
-	// main loop
-	while ( true )
+	if( !code )
 	{
-		int code = InputCodeByMap< ChapterBase* >( "选择章节代号", Chapters );
-		if( code == CONSOLE_CODE_EXIT )
-			break;
+		// main loop
+		while ( true )
+		{
+			code = InputCodeByMap< ChapterBase* >( "选择章节代号", Chapters );
+			if( code == CONSOLE_CODE_EXIT )
+				break;
 
-		Chapters[ code ]->RunLoop();
+			Chapters[ code ]->RunLoop();
 
-		if( !InputYesOrNo( "是否继续选择其他章节测试？" ) )
-			break;
+			if( !InputYesOrNo( "是否继续选择其他章节测试？" ) )
+				break;
+		}
 	}
+	else if( sec )
+		Chapters[ code ]->RunLoop( sec );
 
 	// some clean stuff
 	for ( auto &i : Chapters )

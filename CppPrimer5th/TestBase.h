@@ -62,8 +62,8 @@ public:
 	// 添加一个小节测试
 	void AddSection( const int &code, const std::string &title, SectionMethod method );
 
-	// 运行章节测试
-	void RunLoop();
+	// 运行章节测试，可以指定具体某一节
+	void RunLoop( int sec = 0 );
 
 	// 打印本章的标题
 	friend std::ostream & operator <<( std::ostream &o, const ChapterBase *obj )
@@ -91,8 +91,8 @@ ChapterBase* Chapter15Init();
 ChapterBase* Chapter16Init();
 
 
-// 测试主循环
-void RunMainLoop();
+// 测试主循环，可以指定具体某一章、某一节
+void RunMainLoop( int code = 0, int sec = 0 );
 
 
 #endif // !TESTBASE_H
