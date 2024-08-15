@@ -51,7 +51,7 @@ enum ConsoleTextColor
 // 控制台相关的初始化
 inline void ConsoleInit( void )
 {
-	cout.imbue( locale( "zh_CN" ) );	// 解决在CI平台中文显示乱码
+	std::locale::global( locale( "zh_CN" ) );	// 解决在CI平台中文显示乱码
 
 #ifdef WIN32
 	HConsoleWindow = GetStdHandle( STD_OUTPUT_HANDLE );
