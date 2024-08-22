@@ -33,7 +33,7 @@ jobs:
         git clone https://github.com/Microsoft/vcpkg.git
         .\vcpkg\bootstrap-vcpkg.bat
         .\vcpkg\vcpkg install boost-filesystem:x64-windows-static boost-format:x64-windows-static \
-        boost-type-index:x64-windows-static boost-functional:x64-windows-static
+          boost-type-index:x64-windows-static boost-functional:x64-windows-static
         .\vcpkg\vcpkg integrate install
 
     - name: Build solution
