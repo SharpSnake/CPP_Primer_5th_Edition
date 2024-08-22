@@ -26,30 +26,18 @@ jobs:
     - name: Setup msbuild and Visual Studio
       uses: microsoft/setup-msbuild@v2
       with:
-        vs-version: 17.10.5
+        vs-version: 17.10.6
  
-    # https://github.com/marketplace/actions/build-boost
-    - name: Install boost
-      uses: egor-tensin/build-boost@v1
-      id: install-boost
-      with:
-        version: 1.85.0
-        libraries: system
-        configuration: Debug
-        platform: x64
-        static: 1
-        toolset: msvc143
-
-    # 上一步编译的boost静态库没有版本后缀，会导致后续找不到链接库
-    - name: Rename libboost
-      shell: cmd
-      run: for %%f in (${{ steps.install-boost.outputs.librarydir }}\libboost_*.lib) do ren "%%f" "%%~nf-vc143-mt-gd-x64-1_85.lib"
+    - name: Install vcpkg
+      run: |
+        git clone https://github.com/Microsoft/vcpkg.git
+        .\vcpkg\bootstrap-vcpkg.bat
+        .\vcpkg\vcpkg install boost-filesystem:x64-windows-static boost-format:x64-windows-static \
+        boost-type-index:x64-windows-static boost-functional:x64-windows-static
+        .\vcpkg\vcpkg integrate install
 
     - name: Build solution
       run: msbuild -t:rebuild /p:Configuration=Debug /p:Platform=x64 CppPrimer5th.sln
-      env:
-        BOOST_ROOT: ${{ steps.install-boost.outputs.root }}
-        BOOST_LIB: ${{ steps.install-boost.outputs.librarydir }}
 
     - name: Run tests
       shell: cmd

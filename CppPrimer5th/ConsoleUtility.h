@@ -11,7 +11,7 @@
 #	include <Windows.h>
 #endif
 
-#include <clocale>
+#include <locale>
 #include <iostream>
 #include <map>
 #include <string>
