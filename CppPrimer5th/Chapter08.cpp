@@ -178,13 +178,12 @@ void Test_OtherStream()
 	cout << "binary stream -> _HouseInfo:" << endl << ih3 << endl << ih4 << endl;
 }
 
-
-ChapterBase* Chapter08Init()
+void Chapter08Init()
 {
-	ChapterBase *ch08 = new ChapterBase( "第八章 std IO库" );
+	auto ch08 = ChapterBase::AddChapter( 8, "第八章 std IO库" );
 	ch08->AddSection( 1, "基础概念", &Test_IOBase );
 	ch08->AddSection( 2, "标准输入、输出", &Test_CinCout );
 	ch08->AddSection( 3, "文件输入、输出", &Test_Fstream );
 	ch08->AddSection( 4, "字符串、二进制内存流", &Test_OtherStream );
-	return ch08;
 }
+static int _Init = ( Chapter08Init(), 0 );

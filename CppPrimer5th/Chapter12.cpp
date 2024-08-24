@@ -305,14 +305,13 @@ void Test_unique_ptr()
 	upAry.reset();	// 书上说release是释放资源，应该写错了，释放仍然是reset
 }
 
-ChapterBase* Chapter12Init()
+void Chapter12Init()
 {
-	ChapterBase *ch12 = new ChapterBase( "第十二章 动态内存与智能指针" );
+	auto ch12 = ChapterBase::AddChapter( 12, "第十二章 动态内存与智能指针" );
 	ch12->AddSection( 1, "动态内存基础", &Test_DynamicMemory );
 	ch12->AddSection( 2, "C++11 shared_ptr", &Test_shared_ptr );
 	ch12->AddSection( 3, "C++11 unique_ptr", &Test_unique_ptr );
 
 	// allocator的使用参考第十三章"allocator的真相及原理"，以及TCVector的实现
-
-	return ch12;
 }
+static int _Init = ( Chapter12Init(), 0 );

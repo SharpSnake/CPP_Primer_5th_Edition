@@ -45,9 +45,9 @@ void Test_SeqContainerUtility()
 	PrintContainer09( iset1 );
 }
 
-ChapterBase* Chapter09Init()
+void Chapter09Init()
 {
-	ChapterBase *ch09 = new ChapterBase( "µÚ¾ÅÕÂ Ë³ĞòÈİÆ÷" );
+	auto ch09 = ChapterBase::AddChapter( 9, "µÚ¾ÅÕÂ Ë³ĞòÈİÆ÷" );
 	ch09->AddSection( 1, "É¾³ıÔªËØ", &Test_SeqContainerUtility );
-	return ch09;
 }
+static int _Init = ( Chapter09Init(), 0 );

@@ -216,13 +216,13 @@ void Test_AutoType()
 	decltype( i2 = i1 ) dt8 = i2;	PrintTypeName( dt8 );// int &
 }
 
-ChapterBase* Chapter02Init()
+void Chapter02Init()
 {
-	ChapterBase *ch02 = new ChapterBase( "第二章 变量和基本类型" );
+	auto ch02 = ChapterBase::AddChapter( 2, "第二章 变量和基本类型" );
 	ch02->AddSection( 1, "基础类型", &Test_BaseType );
 	ch02->AddSection( 2, "变量初始化", &Test_Initialization );
 	ch02->AddSection( 3, "复合类型", &Test_CompoundTypes );
 	ch02->AddSection( 4, "const相关", &Test_Const );
 	ch02->AddSection( 5, "自动类型", &Test_AutoType );
-	return ch02;
 }
+static auto	_Init = ( Chapter02Init(), 0 );

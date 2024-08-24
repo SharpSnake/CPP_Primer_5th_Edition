@@ -228,15 +228,15 @@ void Test_VirtualFunctionTable()
 	der_Talk( nullptr, "Hi there!" );	// 成员函数实际上隐含第一个参数是this
 }
 
-ChapterBase* Chapter15Init()
+void Chapter15Init()
 {
-	ChapterBase *ch15 = new ChapterBase( "第十五章 面向对象编程" );
+	auto ch15 = ChapterBase::AddChapter( 15, "第十五章 面向对象编程" );
 	ch15->AddSection( 1, "OOP基本概念", Test_OOPBase );
 	ch15->AddSection( 2, "虚函数", Test_VirtualFunctions );
 	ch15->AddSection( 3, "继承的新特性", Test_NewInheritance );
 	ch15->AddSection( 4, "题外话：虚函数表", Test_VirtualFunctionTable );
-	return ch15;
 }
+static int _Init = ( Chapter15Init(), 0 );
 
 string TCPerson::_GenIDNumber()
 {

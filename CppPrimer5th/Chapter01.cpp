@@ -41,10 +41,10 @@ void Test_FileRedirection()
 	fcout.close();
 }
 
-ChapterBase* Chapter01Init()
+void Chapter01Init()
 {
-	ChapterBase *ch01 = new ChapterBase( "第一章 简介" );
+	auto ch01 = ChapterBase::AddChapter( 1, "第一章 简介" );
 	ch01->AddSection( 1, "标准输入输出", &Test_CinAndCout );
 	ch01->AddSection( 2, "文件重定向", &Test_FileRedirection );
-	return ch01;
 }
+static int _Init = ( Chapter01Init(), 0 ); // 利用逗号运算符的功能

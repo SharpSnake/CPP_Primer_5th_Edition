@@ -329,12 +329,11 @@ void Test_NewTemplate()
 	// 上面的StringCombine是解包后继续调用可变参数函数，还有TCVector的EmplaceBack也是一个例子
 }
 
-
-ChapterBase* Chapter16Init()
+void Chapter16Init()
 {
-	ChapterBase *ch16 = new ChapterBase( "第十六章 模板、泛型" );
+	auto ch16 = ChapterBase::AddChapter( 16, "第十六章 模板、泛型" );
 	ch16->AddSection( 1, "基础概念", Test_TemplateBase );
 	ch16->AddSection( 2, "类模板", Test_ClassTemplate );
 	ch16->AddSection( 3, "模板新特性", Test_NewTemplate );
-	return ch16;
 }
+static int _Init = ( Chapter16Init(), 0 );

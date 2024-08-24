@@ -263,12 +263,12 @@ void Test_ArrayNew()
 	_PrintArray( v4 );
 }
 
-ChapterBase* Chapter03Init()
+void Chapter03Init()
 {
-	ChapterBase *ch03 = new ChapterBase( "第三章 字符串、向量和数组" );
+	auto ch03 = ChapterBase::AddChapter( 3, "第三章 字符串、向量和数组" );
 	ch03->AddSection( 1, "std::string", &Test_StdString );
 	ch03->AddSection( 2, "std::vector", &Test_StdVector );
 	ch03->AddSection( 3, "数组的类型声明", &Test_ArrayDeclaration );
 	ch03->AddSection( 4, "数组的新特性", &Test_ArrayNew );
-	return ch03;
 }
+static int _Init = ( Chapter03Init(), 0 );

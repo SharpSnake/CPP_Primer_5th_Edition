@@ -195,12 +195,12 @@ void Test_ClassConver()
 		"否则相关函数调用或算术运算中也会产生困扰" << endl;
 }
 
-ChapterBase* Chapter14Init()
+void Chapter14Init()
 {
-	ChapterBase *ch14 = new ChapterBase( "第十四章 运算符与类型转换" );
+	auto ch14 = ChapterBase::AddChapter( 14, "第十四章 运算符与类型转换" );
 	ch14->AddSection( 1, "常用运算符", &Test_OperatorBase );
 	ch14->AddSection( 2, "函数对象", &Test_FunObj );
 	ch14->AddSection( 3, "C++11 function", &Test_NewFunction );
 	ch14->AddSection( 4, "类型转换", &Test_ClassConver );
-	return ch14;
 }
+static int _Init = ( Chapter14Init(), 0 );

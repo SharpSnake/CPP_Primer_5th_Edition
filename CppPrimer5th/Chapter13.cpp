@@ -196,15 +196,15 @@ void Test_CopyOther()
 	cout << "uninitialized_copy相当于在一块未经开垦的内存上重复第2步；" << endl;
 }
 
-ChapterBase* Chapter13Init()
+void Chapter13Init()
 {
-	ChapterBase *ch13 = new ChapterBase( "第十三章 拷贝控制" );
+	auto ch13 = ChapterBase::AddChapter( 13, "第十三章 拷贝控制" );
 	ch13->AddSection( 1, "重要概念", &Test_CopyBase );
 	ch13->AddSection( 2, "拷贝和赋值", &Test_CopyAssign );
 	ch13->AddSection( 3, "右值引用与移动", &Test_RvalueMove );
 	ch13->AddSection( 4, "其他重要操作", &Test_CopyOther );
-	return ch13;
 }
+static int _Init = ( Chapter13Init(), 0 );
 
 TCVector< int > MakeRandiVec( size_t count, int imin, int imax )
 {

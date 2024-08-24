@@ -27,26 +27,15 @@ void ChapterBase::RunLoop( int sec )
 }
 
 
-map< int, ChapterBase* > Chapters{};
-
-void RunMainLoop( int code, int sec )
+ChapterBase* ChapterBase::AddChapter( int code, const std::string &title )
 {
-	// some initialize stuff
-	Chapters[  1 ] = Chapter01Init();
-	Chapters[  2 ] = Chapter02Init();
-	Chapters[  3 ] = Chapter03Init();
-	Chapters[  4 ] = Chapter04Init();
-	Chapters[  5 ] = Chapter05Init();
-	Chapters[  6 ] = Chapter06Init();
-	Chapters[  7 ] = Chapter07Init();
-	Chapters[  8 ] = Chapter08Init();
-	Chapters[  9 ] = Chapter09Init();
-	Chapters[ 12 ] = Chapter12Init();
-	Chapters[ 13 ] = Chapter13Init();
-	Chapters[ 14 ] = Chapter14Init();
-	Chapters[ 15 ] = Chapter15Init();
-	Chapters[ 16 ] = Chapter16Init();
+	auto newchp = new ChapterBase( title );
+	Chapters[ code ] = newchp;
+	return newchp;
+}
 
+void ChapterBase::RunMainLoop( int code, int sec )
+{
 	if( !code )
 	{
 		// main loop
@@ -57,9 +46,6 @@ void RunMainLoop( int code, int sec )
 				break;
 
 			Chapters[ code ]->RunLoop();
-
-			if( !InputYesOrNo( "是否继续选择其他章节测试？" ) )
-				break;
 		}
 	}
 	else if( sec )

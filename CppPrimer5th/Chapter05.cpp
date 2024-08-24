@@ -209,13 +209,13 @@ void Test_Exception()
 	}
 }
 
-ChapterBase* Chapter05Init()
+void Chapter05Init()
 {
-	ChapterBase *ch05 = new ChapterBase( "µ⁄ŒÂ’¬ ”Ôæ‰" );
+	auto ch05 = ChapterBase::AddChapter( 5, "µ⁄ŒÂ’¬ ”Ôæ‰" );
 	ch05->AddSection( 1, "Ãıº˛”Ôæ‰", &Test_Ifelse );
 	ch05->AddSection( 2, "switch”Ôæ‰", &Test_Switch );
 	ch05->AddSection( 3, "µ¸¥˙”Ôæ‰", &Test_Iterative );
 	ch05->AddSection( 4, "Ã¯◊™”Ôæ‰", &Test_Jump );
 	ch05->AddSection( 5, "“Ï≥£", &Test_Exception );
-	return ch05;
 }
+static int _Init = ( Chapter05Init(), 0 );

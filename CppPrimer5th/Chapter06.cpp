@@ -202,29 +202,29 @@ void Test_FunctionPointer()
 	pFMulti( 3, 4 );
 }
 
-ChapterBase* Chapter06Init()
+void Chapter06Init()
 {
 	// 第六章测试比较特殊，程序启动后开启后台线程用于测试
 	thread worker1( []( void )
 	{
 		while ( Worker1Run )	// 先不考虑线程安全和锁，这里仅仅是简单的测试
 		{
-			this_thread::sleep_for( chrono::nanoseconds( 1 ) );	// 纳秒都行！？
+			this_thread::sleep_for( chrono::milliseconds( 100 ) );
 			CallLocalStaticObject( false );
 		}
 		cout << "Worker1 stoped." << endl;
 	} );
 	worker1.detach();
 
-	ChapterBase *ch06 = new ChapterBase( "第六章 函数" );
+	auto ch06 = ChapterBase::AddChapter( 6, "第六章 函数" );
 	ch06->AddSection( 1, "基础概念", &Test_Base );
 	ch06->AddSection( 2, "数组形参", &Test_ArrayParam );
 	ch06->AddSection( 3, "返回数组类型", &Test_ArrayReturn );
 	ch06->AddSection( 4, "可变形参", &Test_VaryingParam );
 	ch06->AddSection( 5, "函数重载", &Test_Overloaded );
 	ch06->AddSection( 6, "函数指针", &Test_FunctionPointer );
-	return ch06;
 }
+static int _Init = ( Chapter06Init(), 0 );
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
@@ -232,7 +232,7 @@ ChapterBase* Chapter06Init()
 // 这个函数包含一个局部静态变量，用于记录这个函数被（多个线程）调用的次数总和
 void CallLocalStaticObject( bool needPrint )
 {
-	static int callingCount;	// 此变量会一直存在，默认是0，当然可以手动初始化
+	static int callingCount{};	// 此变量会一直存在，默认是0，当然可以手动初始化
 	if( needPrint )
 		cout << "Until now, the CallingCount is : " << callingCount << endl;
 	else

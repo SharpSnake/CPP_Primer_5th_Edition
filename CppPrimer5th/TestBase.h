@@ -53,12 +53,20 @@ private:
 
 	// 小节序号-小节实例，子类构造函数中负责填充
 	std::map< int, SectionTest > m_TestCases;
+
+	inline static std::map< int, ChapterBase* > Chapters{};
 	
 public:
 	ChapterBase( const std::string &title ) : m_Title( title ) {}
 	~ChapterBase() {}
 	
 public:
+	// 添加一个章节测试用例
+	static ChapterBase* AddChapter( int code, const std::string &title );
+
+	// 测试主循环，可以指定具体某一章、某一节
+	static void RunMainLoop( int code = 0, int sec = 0 );
+
 	// 添加一个小节测试
 	void AddSection( const int &code, const std::string &title, SectionMethod method );
 
@@ -71,28 +79,5 @@ public:
 		return o << obj->m_Title;
 	}
 };
-
-
-// 各个章的初始化，返回一个章节实例
-ChapterBase* Chapter01Init();
-ChapterBase* Chapter02Init();
-ChapterBase* Chapter03Init();
-ChapterBase* Chapter04Init();
-ChapterBase* Chapter05Init();
-ChapterBase* Chapter06Init();
-ChapterBase* Chapter07Init();
-ChapterBase* Chapter08Init();
-ChapterBase* Chapter09Init();
-
-ChapterBase* Chapter12Init();
-ChapterBase* Chapter13Init();
-ChapterBase* Chapter14Init();
-ChapterBase* Chapter15Init();
-ChapterBase* Chapter16Init();
-
-
-// 测试主循环，可以指定具体某一章、某一节
-void RunMainLoop( int code = 0, int sec = 0 );
-
 
 #endif // !TESTBASE_H

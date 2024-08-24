@@ -261,14 +261,14 @@ void Test_ExpressionNew()
 	cout << endl;
 }
 
-ChapterBase* Chapter04Init()
+void Chapter04Init()
 {
-	ChapterBase *ch04 = new ChapterBase( "第四章 表达式" );
+	auto ch04 = ChapterBase::AddChapter( 4, "第四章 表达式" );
 	ch04->AddSection( 1, "基本概念", &Test_ExpressionBase );
 	ch04->AddSection( 2, "位运算", &Test_BitwiseOperator );
 	ch04->AddSection( 3, "其他运算符", &Test_OtherOperator );
 	ch04->AddSection( 4, "隐式类型转换", &Test_ImplicitConversion );
 	ch04->AddSection( 5, "显式类型转换", &Test_ExplicitConversion );
 	ch04->AddSection( 6, "新特性", &Test_ExpressionNew );
-	return ch04;
 }
+static int _Init = ( Chapter04Init(), 0 );

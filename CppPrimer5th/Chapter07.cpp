@@ -133,15 +133,15 @@ void Test_Features()
 	cout << TianAnMen << endl2 << WangFuJing << endl2 << HuangHeLou << endl;
 }
 
-ChapterBase* Chapter07Init()
+void Chapter07Init()
 {
-	ChapterBase *ch07 = new ChapterBase( "第七章 类基础" );
+	auto ch07 = ChapterBase::AddChapter( 7, "第七章 类基础" );
 	ch07->AddSection( 1, "深度理解类", &Test_UnderstandingClass );
 	ch07->AddSection( 2, "构造函数", &Test_Constructor );
 	ch07->AddSection( 3, "成员函数", &Test_MemFunction );
 	ch07->AddSection( 4, "类的一些重要特性", &Test_Features );
-	return ch07;
 }
+static int _Init = ( Chapter07Init(), 0 );
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
