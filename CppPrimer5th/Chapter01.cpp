@@ -13,8 +13,7 @@ void Test_CinAndCout()
 	while ( cin >> vInput )
 		cout << "新键入了一个数字：" << vInput << endl;
 	cin.clear();
-	cin.sync();
-
+	cin.ignore( numeric_limits< streamsize >::max(), '\n' );
 
 	// 单个对象姓名和年龄间用空格，多个对象间用回车
 	StartOneTest( "键入多个复杂Person对象" );

@@ -185,6 +185,7 @@
     <ClCompile Include="Chapter16.cpp" />
     <ClCompile Include="CppPrimer5th.cpp" />
     <ClCompile Include="TestBase.cpp" />
+    <ClCompile Include="TestNothing.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
